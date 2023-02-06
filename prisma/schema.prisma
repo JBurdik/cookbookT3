@@ -20,6 +20,22 @@ model Example {
     updatedAt DateTime @updatedAt
 }
 
+model Recepty {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    title     String
+    ingredients String
+    content   String
+}
+
+model News {
+    id        String   @id @default(cuid())
+    title     String
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())

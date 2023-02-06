@@ -11,9 +11,18 @@ import { prisma } from "../../../server/db";
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
       if (session.user) {
+        const data = await prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          select: {
+            role: true,
+          },
+        });
         session.user.id = user.id;
+        session.user.role = data?.role;
       }
       return session;
     },
