@@ -27,4 +27,12 @@ export const recipesRouter = createTRPCRouter({
   admin: adminProcedure.query(() => {
     return "hello administrator";
   }),
+  delete: adminProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
+    const deletedRecipe = await ctx.prisma.recepty.delete({
+      where: {
+        id: input,
+      },
+    });
+    return { deletedRecipe };
+  }),
 });

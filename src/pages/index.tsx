@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { type Recepty } from "@prisma/client";
 import RecipeForm from "../components/newRecipeForm";
 import { api } from "../utils/api";
+import Link from "next/link";
 
 function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -98,12 +99,16 @@ const AuthShowcase: React.FC = () => {
   }).data?.role;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="flex flex-row items-center justify-center gap-2 text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        <span className="text-center text-sm italic text-red-500">
-          {role && <span> - {role}</span>}
-        </span>
+    <div className="fixed bottom-0 flex w-full flex-row items-center justify-between gap-4 bg-black/70 px-6 py-2">
+      <p className="flex flex-row items-center justify-center gap-2 text-center text-white">
+        {sessionData && (
+          <span className="text-lg">{sessionData.user?.name}</span>
+        )}
+        <Link href="/admin">
+          <span className="text-center text-xs text-red-500">
+            {role && <span> - {role}</span>}
+          </span>
+        </Link>
       </p>
       <button
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
