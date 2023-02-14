@@ -8,8 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "dbpush": "prisma db push",
-    "preinstall": "npx only-allow pnpm"
+    "dbpush": "prisma db push"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
