@@ -29,6 +29,15 @@ model News {
   content   String
 }
 
+model Options {
+  id        String   @id @default(cuid())
+  title     String
+  meta      String
+  showNews  Boolean  @default(false)
+  underConstruction Boolean @default(false)
+  name      String
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String

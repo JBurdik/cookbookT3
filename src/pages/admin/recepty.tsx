@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaEye, FaTrash } from "react-icons/fa";
 import RecipeForm from "../../components/newRecipeForm";
 import { api } from "../../utils/api";
+import AdminWrapper from "./AdminWrapper";
 
 const Recepty = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -32,7 +33,7 @@ const Recepty = () => {
     }
   };
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-purple-700 to-black">
+    <AdminWrapper>
       <RecipeForm isOpen={isOpen} setIsOpen={setIsOpen} onSubmit={getData} />
       <h2 className="my-3 text-5xl font-bold uppercase tracking-wide text-violet-400">
         Seznam receptu
@@ -47,7 +48,10 @@ const Recepty = () => {
         {recipes &&
           recipes.map((recept) => {
             return (
-              <li className="mb-2 flex flex-row items-center justify-between gap-4 rounded-xl bg-white/40 py-2 px-4 text-lg font-semibold">
+              <li
+                key={recept.id}
+                className="mb-2 flex flex-row items-center justify-between gap-4 rounded-xl bg-white/40 py-2 px-4 text-lg font-semibold"
+              >
                 <span>{recept.title}</span>
                 <div className="flex flex-row gap-2">
                   <button onClick={() => recipeDel(recept.id)}>
@@ -61,7 +65,7 @@ const Recepty = () => {
             );
           })}
       </ul>
-    </div>
+    </AdminWrapper>
   );
 };
 

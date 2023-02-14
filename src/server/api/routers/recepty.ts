@@ -3,8 +3,16 @@ import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
 
 export const recipesRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    const recepty = ctx.prisma.recepty.findMany();
+    const recepty = await ctx.prisma.recepty.findMany();
     return recepty;
+  }),
+  getOne: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    const recept = await ctx.prisma.recepty.findUnique({
+      where: {
+        id: input,
+      },
+    });
+    return { recept };
   }),
   newRecipe: publicProcedure
     .input(

@@ -5,9 +5,24 @@
 body {
   @apply text-white;
 }
+h1 {
+  @apply text-4xl font-extrabold tracking-tight text-white;
+}
 .form-input {
   @apply bg-white/70 text-white shadow-md shadow-black outline-none;
 }
 .form-label {
   @apply text-xs font-thin uppercase tracking-widest;
+}
+.opt-form {
+  @apply flex flex-col items-center justify-center gap-4;
+}
+.opt-form .input-group {
+  @apply flex flex-col gap-1;
+}
+.opt-form .input-group input {
+  @apply rounded-md bg-white/30 py-2 px-4;
+}
+.admin-nav {
+  @apply flex h-12 w-12 flex-row items-center justify-center rounded-full bg-white/40;
 }
