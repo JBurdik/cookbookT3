@@ -8,6 +8,7 @@ import Layout from "../components/Layout";
 import { api } from "../utils/api";
 
 import { HiExclamation } from "react-icons/hi";
+import RecipeForm from "../components/newRecipeForm";
 
 function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -21,11 +22,11 @@ function Home() {
     setRecipes([...getRecipes]);
   }
 
-  // const getData = (data: Recepty) => {
-  //   if (recipes) {
-  //     setRecipes([...recipes, data]);
-  //   }
-  // };
+  const getData = (data: Recepty) => {
+    if (recipes) {
+      setRecipes([...recipes, data]);
+    }
+  };
   console.log(admin);
   if (options?.underConstruction)
     return (
@@ -90,11 +91,11 @@ function Home() {
                 </Link>
               ))}
           </div>
-          {/* <RecipeForm
+          <RecipeForm
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             onSubmit={getData}
-          /> */}
+          />
           <div className="flex flex-col items-center justify-center gap-4"></div>
           <div className="flex flex-col items-center gap-2">
             <AuthShowcase />

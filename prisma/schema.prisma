@@ -19,6 +19,7 @@ model Recepty {
   title       String
   content     String
   ingredients String
+  imgUrl      String 
 }
 
 model News {

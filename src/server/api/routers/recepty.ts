@@ -6,6 +6,15 @@ export const recipesRouter = createTRPCRouter({
     const recepty = await ctx.prisma.recepty.findMany();
     return recepty;
   }),
+  getAllTitles: publicProcedure.query(async ({ ctx }) => {
+    const recepty = await ctx.prisma.recepty.findMany({
+      select: {
+        title: true,
+        id: true,
+      },
+    });
+    return recepty;
+  }),
   getOne: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     const recept = await ctx.prisma.recepty.findUnique({
       where: {
@@ -14,6 +23,24 @@ export const recipesRouter = createTRPCRouter({
     });
     return { recept };
   }),
+  uploadPhoto: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        imgUrl: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const photo = await ctx.prisma.recepty.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          imgUrl: input.imgUrl,
+        },
+      });
+      return { photo };
+    }),
   newRecipe: publicProcedure
     .input(
       z.object({
@@ -28,6 +55,7 @@ export const recipesRouter = createTRPCRouter({
           title: input.title,
           content: input.content,
           ingredients: input.ingredients,
+          imgUrl: "https://picsum.photos/200/300",
         },
       });
       return { newRecipe };
