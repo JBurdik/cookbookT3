@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { type Recepty } from "@prisma/client";
 import Link from "next/link";
 import Layout from "../components/Layout";
-import RecipeForm from "../components/newRecipeForm";
 import { api } from "../utils/api";
 
 import { HiExclamation } from "react-icons/hi";
@@ -91,11 +90,11 @@ function Home() {
                 </Link>
               ))}
           </div>
-          <RecipeForm
+          {/* <RecipeForm
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             onSubmit={getData}
-          />
+          /> */}
           <div className="flex flex-col items-center justify-center gap-4"></div>
           <div className="flex flex-col items-center gap-2">
             <AuthShowcase />

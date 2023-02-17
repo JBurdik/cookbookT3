@@ -1,7 +1,7 @@
+import { type Recepty } from "@prisma/client";
 import type { FormEvent } from "react";
 import { useState } from "react";
 
-import { type Recepty } from "@prisma/client";
 import { api } from "../utils/api";
 
 interface FormData {

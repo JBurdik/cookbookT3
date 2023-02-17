@@ -2,7 +2,6 @@ import { type Recepty } from "@prisma/client";
 import Link from "next/link";
 import { useState } from "react";
 import { FaEye, FaTrash } from "react-icons/fa";
-import RecipeForm from "../../components/newRecipeForm";
 import { api } from "../../utils/api";
 import AdminWrapper from "./AdminWrapper";
 
@@ -34,7 +33,7 @@ const Recipes = () => {
   };
   return (
     <AdminWrapper>
-      <RecipeForm isOpen={isOpen} setIsOpen={setIsOpen} onSubmit={getData} />
+      {/* <RecipeForm isOpen={isOpen} setIsOpen={setIsOpen} onSubmit={getData} /> */}
       <h2 className="my-3 text-5xl font-bold uppercase tracking-wide text-violet-400">
         Seznam receptu
       </h2>
