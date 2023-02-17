@@ -21,11 +21,11 @@ function Home() {
     setRecipes([...getRecipes]);
   }
 
-  const getData = (data: Recepty) => {
-    if (recipes) {
-      setRecipes([...recipes, data]);
-    }
-  };
+  // const getData = (data: Recepty) => {
+  //   if (recipes) {
+  //     setRecipes([...recipes, data]);
+  //   }
+  // };
   console.log(admin);
   if (options?.underConstruction)
     return (
