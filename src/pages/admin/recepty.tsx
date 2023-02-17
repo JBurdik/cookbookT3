@@ -6,7 +6,7 @@ import RecipeForm from "../../components/newRecipeForm";
 import { api } from "../../utils/api";
 import AdminWrapper from "./AdminWrapper";
 
-const Recepty = () => {
+const Recipes = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: recepty } = api.recipes.getAll.useQuery();
   const [recipes, setRecipes] = useState<Recepty[]>();
@@ -69,4 +69,4 @@ const Recepty = () => {
   );
 };
 
-export default Recepty;
+export default Recipes;
