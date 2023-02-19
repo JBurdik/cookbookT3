@@ -36,7 +36,7 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+        <div className="container flex flex-col items-center justify-center gap-12 px-6 py-16 ">
           <h1 className="sm:text-[5rem]">
             {options?.name}{" "}
             <span className="text-[hsl(280,100%,70%)]">Kuchařka</span>
@@ -56,7 +56,7 @@ function Home() {
               ))}
           </div>
           <h2 className="text-3xl">Recepty: </h2>
-          <div className="grid h-full grid-cols-2 items-center justify-center gap-4 sm:grid-cols-1">
+          <div className="max-w-5xlxl grid h-full w-full grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
             {recipes &&
               recipes.map((recipe, i) => (
                 <Link
@@ -68,7 +68,7 @@ function Home() {
                     key={i}
                     className="flex h-full flex-col items-center justify-start gap-4 rounded-xl bg-white/10 p-4 text-white transition-all hover:bg-white/20"
                   >
-                    <div className="relative flex h-64 w-72 items-center justify-center">
+                    <div className="relative flex h-80 w-full items-center justify-center">
                       <Image
                         src={recipe.imgUrl}
                         fill
