@@ -56,7 +56,7 @@ function Home() {
               ))}
           </div>
           <h2 className="text-3xl">Recepty: </h2>
-          <div className="grid h-full grid-cols-2 items-center justify-center gap-4">
+          <div className="grid h-full grid-cols-2 items-center justify-center gap-4 sm:grid-cols-1">
             {recipes &&
               recipes.map((recipe, i) => (
                 <Link
