@@ -7,31 +7,22 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { api } from "../utils/api";
 
-import { HiExclamation } from "react-icons/hi";
-import RecipeForm from "../components/newRecipeForm";
+import Image from "next/image";
+import { FiAlertTriangle } from "react-icons/fi";
 
 function Home() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const news = api.news.getNews.useQuery(undefined).data;
   const getRecipes = api.recipes.getAll.useQuery().data;
   const options = api.options.getAll.useQuery().data;
-  const admin = api.recipes.admin.useQuery();
   const [recipes, setRecipes] = useState<Recepty[]>();
 
   if (getRecipes && !recipes) {
     setRecipes([...getRecipes]);
   }
-
-  const getData = (data: Recepty) => {
-    if (recipes) {
-      setRecipes([...recipes, data]);
-    }
-  };
-  console.log(admin);
   if (options?.underConstruction)
     return (
       <Layout>
-        <HiExclamation size={200} className="text-yellow-300" />
+        <FiAlertTriangle size={200} className="text-yellow-300" />
         <h1 className="text-4xl">
           Pracuji na vylepšení webu brzy bude znovu k dispozici
         </h1>
@@ -65,20 +56,26 @@ function Home() {
               ))}
           </div>
           <h2 className="text-3xl">Recepty: </h2>
-          <button
-            className="rounded-sm bg-purple-600 px-4 py-2 text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            Přidat recept
-          </button>
-          <div className="grid grid-cols-2 items-center justify-center gap-4">
+          <div className="grid h-full grid-cols-2 items-center justify-center gap-4">
             {recipes &&
               recipes.map((recipe, i) => (
-                <Link href={`/recipe/${recipe.id}`} key={recipe.id}>
+                <Link
+                  href={`/recipe/${recipe.id}`}
+                  className="h-full"
+                  key={recipe.id}
+                >
                   <div
                     key={i}
-                    className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                    className="flex h-full flex-col items-center justify-start gap-4 rounded-xl bg-white/10 p-4 text-white transition-all hover:bg-white/20"
                   >
+                    <div className="relative flex h-64 w-72 items-center justify-center">
+                      <Image
+                        src={recipe.imgUrl}
+                        fill
+                        className="rounded-xl object-cover"
+                        alt={recipe.title}
+                      />
+                    </div>
                     <h3 className="text-2xl font-bold">{recipe.title}</h3>
 
                     <p className="text-lg">{recipe.content}</p>
@@ -91,11 +88,6 @@ function Home() {
                 </Link>
               ))}
           </div>
-          <RecipeForm
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            onSubmit={getData}
-          />
           <div className="flex flex-col items-center justify-center gap-4"></div>
           <div className="flex flex-col items-center gap-2">
             <AuthShowcase />

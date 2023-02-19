@@ -9,7 +9,7 @@ h1 {
   @apply text-4xl font-extrabold tracking-tight text-white;
 }
 .form-input {
-  @apply bg-white/70 text-white shadow-md shadow-black outline-none;
+  @apply rounded-md bg-white/70 py-2 px-4 text-white shadow-md shadow-black outline-none;
 }
 .form-label {
   @apply text-xs font-thin uppercase tracking-widest;

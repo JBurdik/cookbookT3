@@ -21,6 +21,9 @@ export const recipesRouter = createTRPCRouter({
         id: input,
       },
     });
+    if (recept === null) {
+      throw new Error("Recept neexistuje");
+    }
     return { recept };
   }),
   uploadPhoto: publicProcedure
@@ -60,9 +63,28 @@ export const recipesRouter = createTRPCRouter({
       });
       return { newRecipe };
     }),
-  admin: adminProcedure.query(() => {
-    return "hello administrator";
-  }),
+  update: adminProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        content: z.string(),
+        ingredients: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const editedRecipe = await ctx.prisma.recepty.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          content: input.content,
+          ingredients: input.ingredients,
+        },
+      });
+      return { editedRecipe };
+    }),
   delete: adminProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
     const deletedRecipe = await ctx.prisma.recepty.delete({
       where: {

@@ -12,6 +12,7 @@ const Recipes = () => {
   const { data: recepty } = api.recipes.getAll.useQuery();
   const [recipes, setRecipes] = useState<Recepty[]>();
   const [openEdit, setOpenEdit] = useState<Array<string>>([]);
+  const [editId, setEditId] = useState<string>("");
   const delRecipe = api.recipes.delete.useMutation({
     onSuccess(data) {
       const filteredRecipes = recipes?.filter((recept) => {
@@ -20,7 +21,6 @@ const Recipes = () => {
       setRecipes(filteredRecipes);
     },
   });
-
   const recipeDel = (id: string) => {
     delRecipe.mutate(id);
   };
@@ -60,19 +60,24 @@ const Recipes = () => {
                     <button onClick={() => recipeDel(recept.id)}>
                       <FaTrash />
                     </button>
-                    <button onClick={() => recipeDel(recept.id)}>
+                    <button
+                      onClick={() => (
+                        setOpenEdit([...openEdit, recept.id]),
+                        setEditId(recept.id)
+                      )}
+                    >
                       <FaPen />
                     </button>
-                    <Link href="/">
+                    <Link href={`/recipe/${recept.id}`}>
                       <FaEye />
                     </Link>
                   </div>
                 </div>
-                <RecipeEdit recipeId={recept.id} />
               </li>
             );
           })}
       </ul>
+      {editId && <RecipeEdit recipeId={editId} setEditId={setEditId} />}
     </AdminWrapper>
   );
 };

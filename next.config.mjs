@@ -15,5 +15,8 @@ const config = {
     defaultLocale: "en",
   },
   output: "standalone",
+  images: {
+    domains: ["cookbook-t3.s3.eu-central-1.amazonaws.com"],
+  },
 };
 export default config;

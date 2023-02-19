@@ -19,7 +19,7 @@ model Recepty {
   title       String
   content     String
   ingredients String
-  imgUrl      String 
+  imgUrl      String @default("https://via.placeholder.com/150")
 }
 
 model News {
