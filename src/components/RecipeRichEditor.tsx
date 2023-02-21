@@ -95,9 +95,9 @@ const RecipeRichEditor = ({
     onUpdate: ({ editor }) => {
       setContent(JSON.stringify(editor.getJSON()));
     },
-    content:
-      generateHTML(JSON.parse(content) as JSONObject, [StarterKit]) ||
-      "<p>Zde vepiš obsah receptu</p>",
+    content: content
+      ? generateHTML(JSON.parse(content) as JSONObject, [StarterKit])
+      : "<p>Zde vepiš obsah receptu</p>",
   });
 
   return (

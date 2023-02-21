@@ -1,7 +1,9 @@
 import { type Recepty } from "@prisma/client";
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
+import { useS3Upload } from "next-s3-upload";
+import { FiImage } from "react-icons/fi";
 import { api } from "../utils/api";
 import RecipeRichEditor from "./RecipeRichEditor";
 
@@ -16,7 +18,9 @@ const RecipeForm = (props: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
+  const refFileInput = useRef<HTMLInputElement>(null);
   const { isOpen, setIsOpen } = props;
+  const [file, setFile] = useState<File>();
   const [content, setContent] = useState<string>("");
   const [form, setForm] = useState<FormData>({
     title: "",
@@ -24,15 +28,53 @@ const RecipeForm = (props: {
     ingredients: "",
   });
   const newRecipe = api.recipes.newRecipe.useMutation({
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       console.log("onSuccess: ", data);
+      if (file) {
+        await uplodadImage(file, data.newRecipe.id);
+      }
       props.onSubmit(data.newRecipe);
       setIsOpen(false);
+    },
+  });
+  const upPhoto = api.recipes.uploadPhoto.useMutation({
+    onSuccess(data) {
+      console.log(data);
+    },
+    onError(error) {
+      console.error(error);
     },
   });
   function createRecipe(data: FormData) {
     newRecipe.mutate(data);
   }
+  // file upload
+  const openSelectFile = () => {
+    if (refFileInput.current) {
+      refFileInput.current.click();
+    }
+  };
+  const handleFile = (file: File | undefined | null) => {
+    if (!file) return;
+    setFile(file);
+  };
+  const { uploadToS3 } = useS3Upload();
+  const uplodadImage = async (file: File, recipeId: string) => {
+    const { url } = await uploadToS3(file, {
+      endpoint: {
+        request: {
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: {
+            receptId: recipeId,
+            folder: "recepty",
+          },
+        },
+      },
+    });
+    upPhoto.mutate({ id: recipeId, imgUrl: url });
+  };
 
   const handleSubmit = (e: FormEvent, data: FormData) => {
     e.preventDefault();
@@ -77,6 +119,19 @@ const RecipeForm = (props: {
         />
         <label className="form-label">Popis Receptu:</label>
         <RecipeRichEditor content={content} setContent={setContent} />
+        <input
+          type="file"
+          ref={refFileInput}
+          className="hidden"
+          onChange={(e) => handleFile(e.target.files && e.target.files[0])}
+        />
+        <button
+          type="button"
+          onClick={openSelectFile}
+          className="flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+        >
+          <FiImage /> {file ? file.name : "Vybrat obrázek"}
+        </button>
         <button
           type="submit"
           className="mt-4 cursor-pointer rounded-xl bg-purple-400 p-2 font-light uppercase tracking-widest transition-all hover:bg-purple-700"
