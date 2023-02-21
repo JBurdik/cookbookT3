@@ -51,7 +51,7 @@ function RecipeEdit(props: {
     },
   });
 
-  const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+  const { uploadToS3 } = useS3Upload();
   if (!recept) return <div>loading</div>;
   if (recept && !recipe) {
     console.log(recept);
