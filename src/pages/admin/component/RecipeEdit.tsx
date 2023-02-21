@@ -1,16 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
-import type { Recepty } from "@prisma/client";
 import { useS3Upload } from "next-s3-upload";
 import { useState } from "react";
 import { FiImage } from "react-icons/fi";
+import RecipeRichEditor from "../../../components/RecipeRichEditor";
 import { api } from "../../../utils/api";
+
+export interface EditFormData {
+  id: string;
+  title: string;
+  content: string;
+  ingredients: string;
+}
 
 function RecipeEdit(props: {
   recipeId: string;
   setEditId: (id: string) => void;
+  recipeContent: string;
 }) {
   const { recipeId, setEditId } = props;
-  const [recipe, setRecipe] = useState<Recepty>();
+  const [content, setContent] = useState<string>();
+  const [file, setFile] = useState<File>();
+  const [recipe, setRecipe] = useState<EditFormData>({
+    id: "",
+    title: "",
+    content: "",
+    ingredients: "",
+  });
   const recept = api.recipes.getOne.useQuery(recipeId);
   const editRecipe = api.recipes.update.useMutation({
     onSuccess(data) {
@@ -23,9 +38,14 @@ function RecipeEdit(props: {
   const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
   if (!recept.data) return <div>loading</div>;
   if (recept.data && !recipe) {
+    console.log(recept.data);
     setRecipe(recept.data.recept);
+    setContent(recept.data.recept.content);
   }
-  const handleFileChange = async (file: File) => {
+  const handleFileChange = (file: File) => {
+    setFile(file);
+  };
+  const uplodadImage = async (file: File) => {
     const { url } = await uploadToS3(file, {
       endpoint: {
         request: {
@@ -40,11 +60,13 @@ function RecipeEdit(props: {
       },
     });
     upPhoto.mutate({ id: recipeId, imgUrl: url });
-    setEditId("");
   };
   function handleForm(e: React.FormEvent<HTMLFormElement>) {
-    if (!recipe || !recipeId) return;
     e.preventDefault();
+    if (file) {
+      uplodadImage(file).catch((err) => console.log(err));
+    }
+    if (!recipe || !recipeId) return;
     setRecipe({
       ...recipe,
       id: recipeId,
@@ -81,7 +103,7 @@ function RecipeEdit(props: {
           <label className="form-label" htmlFor="content">
             Popis receptu
           </label>
-          <textarea
+          {/* <textarea
             className="form-input"
             name="content"
             id="content"
@@ -89,7 +111,9 @@ function RecipeEdit(props: {
             onChange={(e) =>
               recipe && setRecipe({ ...recipe, content: e.target.value })
             }
-          />
+          /> */}
+
+          <RecipeRichEditor content={content} setContent={setContent} />
           <label className="form-label" htmlFor="ingredients">
             Ingredience
           </label>

@@ -84,6 +84,12 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Tiptap {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  content   String
+}
+
 enum Role {
   USER
   ADMIN

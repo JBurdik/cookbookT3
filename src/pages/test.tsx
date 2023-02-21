@@ -2,6 +2,7 @@
 import { useS3Upload } from "next-s3-upload";
 import { useState } from "react";
 import Layout from "../components/Layout";
+import Tiptap from "../components/TipTap";
 import { api } from "../utils/api";
 
 function Test() {
@@ -30,7 +31,7 @@ function Test() {
   };
   return (
     <Layout>
-      <h1>Upload obrazku pro recept</h1>
+      {/* <h1>Upload obrazku pro recept</h1>
 
       <form>
         <select
@@ -55,7 +56,8 @@ function Test() {
         <button onClick={openFileDialog}>Upload file</button>
 
         {imageUrl && <img alt="sakdf" src={imageUrl} />}
-      </div>
+      </div> */}
+      <Tiptap></Tiptap>
     </Layout>
   );
 }

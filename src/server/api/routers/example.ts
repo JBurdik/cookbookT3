@@ -31,4 +31,17 @@ export const exampleRouter = createTRPCRouter({
       role: await userRole,
     };
   }),
+  newTiptap: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const tiptap = await ctx.prisma.tiptap.create({
+        data: {
+          // ingredients: "",
+          // title: "Default",
+          // imgUrl: "https://picsum.photos/200/300",
+          content: input,
+        },
+      });
+      return { tiptap };
+    }),
 });

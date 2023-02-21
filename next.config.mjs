@@ -16,7 +16,7 @@ const config = {
   },
   output: "standalone",
   images: {
-    domains: ["cookbook-t3.s3.eu-central-1.amazonaws.com"],
+    domains: ["cookbook-t3.s3.eu-central-1.amazonaws.com", "picsum.photos"],
   },
 };
 export default config;

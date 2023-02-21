@@ -3,8 +3,9 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { api } from "../utils/api";
+import RecipeRichEditor from "./RecipeRichEditor";
 
-interface FormData {
+export interface FormData {
   title: string;
   content: string;
   ingredients: string;
@@ -16,6 +17,7 @@ const RecipeForm = (props: {
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const { isOpen, setIsOpen } = props;
+  const [content, setContent] = useState<string>("");
   const [form, setForm] = useState<FormData>({
     title: "",
     content: "",
@@ -47,8 +49,8 @@ const RecipeForm = (props: {
         onClick={() => setIsOpen(false)}
       ></div>
       <form
-        onSubmit={(e) => handleSubmit(e, form)}
-        className="z-20 flex flex-col justify-center gap-2 rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-8 shadow-xl"
+        onSubmit={(e) => handleSubmit(e, { ...form, content })}
+        className="z-20 m-4 flex w-full flex-col justify-center gap-2 rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-8 shadow-xl"
       >
         <h1 className="mb-4 text-center text-xl font-thin uppercase tracking-widest text-white">
           Vytvořit Recept
@@ -63,15 +65,6 @@ const RecipeForm = (props: {
           type="text"
           name="title"
         />
-        <label className="form-label" htmlFor="content">
-          Popis receptu:
-        </label>
-        <textarea
-          onChange={(e) => setForm({ ...form, content: e.target.value })}
-          value={form.content}
-          className="form-input"
-          name="content"
-        ></textarea>
         <label className="form-label" htmlFor="ingredients">
           Ingredience oddělené čárkou:
         </label>
@@ -82,11 +75,14 @@ const RecipeForm = (props: {
           type="text"
           name="ingredients"
         />
-        <input
+        <label className="form-label">Popis Receptu:</label>
+        <RecipeRichEditor content={content} setContent={setContent} />
+        <button
           type="submit"
           className="mt-4 cursor-pointer rounded-xl bg-purple-400 p-2 font-light uppercase tracking-widest transition-all hover:bg-purple-700"
-          value="Vytvořit Recept"
-        />
+        >
+          Vytvorit Recept
+        </button>
       </form>
     </div>
   );

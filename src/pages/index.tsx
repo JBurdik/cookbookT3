@@ -7,14 +7,24 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { api } from "../utils/api";
 
+import { generateHTML } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import Image from "next/image";
 import { FiAlertTriangle } from "react-icons/fi";
+import { BounceLoader } from "react-spinners";
+import type { JSONObject } from "superjson/dist/types";
 
 function Home() {
   const news = api.news.getNews.useQuery(undefined).data;
   const getRecipes = api.recipes.getAll.useQuery().data;
   const options = api.options.getAll.useQuery().data;
   const [recipes, setRecipes] = useState<Recepty[]>();
+
+  const generateContent = (json: JSONObject) => {
+    const output = generateHTML(json, [StarterKit]);
+    console.log(output);
+    return output;
+  };
 
   if (getRecipes && !recipes) {
     setRecipes([...getRecipes]);
@@ -44,49 +54,67 @@ function Home() {
           <div className="grid grid-cols-2 items-center justify-center gap-4">
             {news &&
               options?.showNews &&
-              news.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-                >
-                  <h3 className="text-2xl font-bold">{item.title}</h3>
+              news.map((item, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                  >
+                    <h3 className="text-2xl font-bold">{item.title}</h3>
 
-                  <p className="text-lg">{item.content}</p>
-                </div>
-              ))}
+                    <p className="text-lg">{item.title}</p>
+                  </div>
+                );
+              })}
           </div>
           <h2 className="text-3xl">Recepty: </h2>
           <div className="max-w-5xlxl grid h-full w-full grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {recipes &&
-              recipes.map((recipe, i) => (
-                <Link
-                  href={`/recipe/${recipe.id}`}
-                  className="h-full"
-                  key={recipe.id}
-                >
-                  <div
-                    key={i}
-                    className="flex h-full flex-col items-center justify-start gap-4 rounded-xl bg-white/10 p-4 text-white transition-all hover:bg-white/20"
+            {recipes ? (
+              recipes.map((recipe, i) => {
+                const output = generateContent(
+                  JSON.parse(recipe.content) as JSONObject
+                );
+                return (
+                  <Link
+                    href={`/recipe/${recipe.id}`}
+                    className="h-full"
+                    key={recipe.id}
                   >
-                    <div className="relative flex h-80 w-full items-center justify-center">
-                      <Image
-                        src={recipe.imgUrl}
-                        fill
-                        className="rounded-xl object-cover"
-                        alt={recipe.title}
-                      />
+                    <div
+                      key={i}
+                      className="flex h-full flex-col items-center justify-start gap-4 rounded-xl bg-white/10 p-4 text-white transition-all hover:bg-white/20"
+                    >
+                      <div className="relative flex h-80 w-full items-center justify-center">
+                        <Image
+                          src={recipe.imgUrl}
+                          fill
+                          className="rounded-xl object-cover"
+                          alt={recipe.title}
+                        />
+                      </div>
+                      <h3 className="text-2xl font-bold">{recipe.title}</h3>
+
+                      <p
+                        className="text-lg"
+                        dangerouslySetInnerHTML={{ __html: output }}
+                      ></p>
+
+                      {recipe.ingredients &&
+                        recipe.ingredients
+                          .split(",")
+                          .map((item, i) => <p key={i}>{item}</p>)}
                     </div>
-                    <h3 className="text-2xl font-bold">{recipe.title}</h3>
-
-                    <p className="text-lg">{recipe.content}</p>
-
-                    {recipe.ingredients &&
-                      recipe.ingredients
-                        .split(",")
-                        .map((item, i) => <p key={i}>{item}</p>)}
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-5">
+                <BounceLoader color="#786298" />
+                <p className="text-xs font-extralight uppercase tracking-widest">
+                  Načítám recepty...
+                </p>
+              </div>
+            )}
           </div>
           <div className="flex flex-col items-center justify-center gap-4"></div>
           <div className="flex flex-col items-center gap-2">
