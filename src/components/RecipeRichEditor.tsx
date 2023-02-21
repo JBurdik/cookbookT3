@@ -1,7 +1,8 @@
 import type { Editor } from "@tiptap/react";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, generateHTML, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { FaBold, FaHeading } from "react-icons/fa";
+import type { JSONObject } from "superjson/dist/types";
 
 const MenuBar = ({
   editor,
@@ -78,7 +79,6 @@ const RecipeRichEditor = ({
   setContent: (value: string) => void;
   content: string;
 }) => {
-  console.log(content);
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -95,7 +95,9 @@ const RecipeRichEditor = ({
     onUpdate: ({ editor }) => {
       setContent(JSON.stringify(editor.getJSON()));
     },
-    content: "<p>Zde vepiš obsah receptu</p>",
+    content:
+      generateHTML(JSON.parse(content) as JSONObject, [StarterKit]) ||
+      "<p>Zde vepiš obsah receptu</p>",
   });
 
   return (

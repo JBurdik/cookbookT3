@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useS3Upload } from "next-s3-upload";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FiImage } from "react-icons/fi";
 import RecipeRichEditor from "../../../components/RecipeRichEditor";
 import { api } from "../../../utils/api";
@@ -17,33 +17,54 @@ function RecipeEdit(props: {
   setEditId: (id: string) => void;
   recipeContent: string;
 }) {
+  const refFileInput = useRef<HTMLInputElement>(null);
   const { recipeId, setEditId } = props;
-  const [content, setContent] = useState<string>();
+  const [content, setContent] = useState<string>("");
   const [file, setFile] = useState<File>();
-  const [recipe, setRecipe] = useState<EditFormData>({
-    id: "",
-    title: "",
-    content: "",
-    ingredients: "",
-  });
-  const recept = api.recipes.getOne.useQuery(recipeId);
+  const [recipe, setRecipe] = useState<EditFormData>();
+  const recept = api.recipes.getOne.useQuery(recipeId).data?.recept;
+
   const editRecipe = api.recipes.update.useMutation({
     onSuccess(data) {
+      alert(`Editace receptu: ${data.editedRecipe.title} byla úspěšná!`);
       setRecipe(data.editedRecipe);
       setEditId("");
     },
   });
-  const upPhoto = api.recipes.uploadPhoto.useMutation();
+
+  // useMemo(() => console.log(content), [content])
+
+  //show hidden file input
+
+  const openSelectFile = () => {
+    if (refFileInput.current) {
+      refFileInput.current.click();
+    }
+  };
+
+  const upPhoto = api.recipes.uploadPhoto.useMutation({
+    onSuccess(data) {
+      console.log(data);
+    },
+    onError(error) {
+      console.error(error);
+    },
+  });
 
   const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
-  if (!recept.data) return <div>loading</div>;
-  if (recept.data && !recipe) {
-    console.log(recept.data);
-    setRecipe(recept.data.recept);
-    setContent(recept.data.recept.content);
+  if (!recept) return <div>loading</div>;
+  if (recept && !recipe) {
+    console.log(recept);
+    setRecipe(recept);
+    setContent(recept.content);
   }
-  const handleFileChange = (file: File) => {
+  // const handleFileChange = (file: File) => {
+  //   setFile(file);
+  // };
+  const handleFile = (file: File | undefined | null) => {
+    if (!file) return;
     setFile(file);
+    console.log(file);
   };
   const uplodadImage = async (file: File) => {
     const { url } = await uploadToS3(file, {
@@ -67,11 +88,12 @@ function RecipeEdit(props: {
       uplodadImage(file).catch((err) => console.log(err));
     }
     if (!recipe || !recipeId) return;
-    setRecipe({
-      ...recipe,
+    editRecipe.mutate({
       id: recipeId,
+      title: recipe.title,
+      ingredients: recipe.ingredients,
+      content: content,
     });
-    editRecipe.mutate(recipe);
   }
   return (
     <div
@@ -84,7 +106,7 @@ function RecipeEdit(props: {
       <div className="z-20 flex flex-col items-center justify-center gap-2 rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-8 shadow-xl">
         <h1>Editace receptu</h1>
         <form
-          onSubmit={handleForm}
+          onSubmit={(e) => handleForm(e)}
           className="flex flex-col items-center justify-center gap-2"
         >
           <label className="form-label" htmlFor="title">
@@ -113,7 +135,10 @@ function RecipeEdit(props: {
             }
           /> */}
 
-          <RecipeRichEditor content={content} setContent={setContent} />
+          <RecipeRichEditor
+            content={content && content}
+            setContent={setContent}
+          />
           <label className="form-label" htmlFor="ingredients">
             Ingredience
           </label>
@@ -127,6 +152,19 @@ function RecipeEdit(props: {
               recipe && setRecipe({ ...recipe, ingredients: e.target.value })
             }
           />
+          <input
+            type="file"
+            ref={refFileInput}
+            className="hidden"
+            onChange={(e) => handleFile(e.target.files && e.target.files[0])}
+          />
+          <button
+            type="button"
+            onClick={openSelectFile}
+            className="flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+          >
+            <FiImage /> {file ? file.name : "Vybrat obrázek"}
+          </button>
 
           <input
             type="submit"
@@ -135,13 +173,7 @@ function RecipeEdit(props: {
           />
         </form>
 
-        <FileInput onChange={handleFileChange} />
-        <button
-          onClick={openFileDialog}
-          className="flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
-        >
-          <FiImage /> Vybrat obrázek
-        </button>
+        {/* <FileInput onChange={handleFileChange} /> */}
       </div>
     </div>
   );
