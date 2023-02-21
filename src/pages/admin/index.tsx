@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { FaBook, FaCogs } from "react-icons/fa";
+import { FaBook, FaCogs, FaUsers } from "react-icons/fa";
 import AdminWrapper from "./AdminWrapper";
 
 const Index = () => {
@@ -27,6 +27,13 @@ const Index = () => {
         >
           <FaCogs />
           <span>Nastaveni</span>
+        </Link>
+        <Link
+          className="flex flex-col items-center rounded-xl bg-white/40 px-7 py-4"
+          href={"/admin/users"}
+        >
+          <FaUsers />
+          <span>Uživatelé</span>
         </Link>
       </div>
     </AdminWrapper>
