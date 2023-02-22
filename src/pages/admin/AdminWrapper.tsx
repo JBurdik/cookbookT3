@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { BounceLoader } from "react-spinners";
 import Nav from "./Nav";
 
 export default function AdminWrapper({
@@ -12,7 +13,10 @@ export default function AdminWrapper({
   if (status === "loading")
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-purple-700 to-black">
-        Loading...
+        <BounceLoader color="#786298" />
+        <p className="text-xs font-extralight uppercase tracking-widest">
+          Načítám session...
+        </p>
       </div>
     );
 

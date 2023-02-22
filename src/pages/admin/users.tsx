@@ -1,9 +1,13 @@
+import { useSession } from "next-auth/react";
 import { api } from "../../utils/api";
 import AdminWrapper from "./AdminWrapper";
 import SingleUser from "./component/SingleUser";
 
 const Users = () => {
   const users = api.users.getAll.useQuery().data;
+  const { data: session } = useSession();
+  if (!session) return;
+  const filteredUsers = users?.filter((user) => user.id != session.user?.id);
   return (
     <AdminWrapper>
       <h1>User Edit</h1>
@@ -13,7 +17,8 @@ const Users = () => {
           <th>email</th>
           <th>Role</th>
         </tr>
-        {users && users.map((user) => <SingleUser key={user.id} user={user} />)}
+        {filteredUsers &&
+          filteredUsers.map((user) => <SingleUser key={user.id} user={user} />)}
       </table>
     </AdminWrapper>
   );
