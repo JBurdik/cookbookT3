@@ -2,10 +2,10 @@ import type { Recepty } from "@prisma/client";
 import Link from "next/link";
 import { useState } from "react";
 import { FaEye, FaPen, FaTrash } from "react-icons/fa";
-import RecipeForm from "../../components/newRecipeForm";
+import RecipeEdit from "../../components/admin/RecipeEdit";
+import RecipeForm from "../../components/admin/newRecipeForm";
 import { api } from "../../utils/api";
 import AdminWrapper from "./AdminWrapper";
-import RecipeEdit from "./component/RecipeEdit";
 
 const Recipes = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

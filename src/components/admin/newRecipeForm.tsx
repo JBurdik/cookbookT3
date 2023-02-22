@@ -4,8 +4,8 @@ import { useRef, useState } from "react";
 
 import { useS3Upload } from "next-s3-upload";
 import { FiImage } from "react-icons/fi";
-import { api } from "../utils/api";
-import RecipeRichEditor from "./RecipeRichEditor";
+import { api } from "../../utils/api";
+import RecipeRichEditor from "../RecipeRichEditor";
 
 export interface FormData {
   title: string;

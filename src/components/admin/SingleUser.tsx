@@ -1,7 +1,7 @@
 import type { User } from "@prisma/client";
 import { Role } from "@prisma/client";
 import { useState } from "react";
-import { api } from "../../../utils/api";
+import { api } from "../../utils/api";
 
 function SingleUser({ user }: { user: User }) {
   const [role, setRole] = useState<Role>(user.role);

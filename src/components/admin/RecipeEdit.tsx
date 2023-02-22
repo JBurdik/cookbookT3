@@ -2,8 +2,8 @@
 import { useS3Upload } from "next-s3-upload";
 import React, { useRef, useState } from "react";
 import { FiImage } from "react-icons/fi";
-import RecipeRichEditor from "../../../components/RecipeRichEditor";
-import { api } from "../../../utils/api";
+import { api } from "../../utils/api";
+import RecipeRichEditor from "../RecipeRichEditor";
 
 export interface EditFormData {
   id: string;

@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
+import SingleUser from "../../components/admin/SingleUser";
 import { api } from "../../utils/api";
 import AdminWrapper from "./AdminWrapper";
-import SingleUser from "./component/SingleUser";
 
 const Users = () => {
   const users = api.users.getAll.useQuery().data;
