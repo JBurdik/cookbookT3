@@ -15,7 +15,6 @@ export interface EditFormData {
 function RecipeEdit(props: {
   recipeId: string;
   setEditId: (id: string) => void;
-  recipeContent: string;
 }) {
   const refFileInput = useRef<HTMLInputElement>(null);
   const { recipeId, setEditId } = props;
