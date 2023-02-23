@@ -92,9 +92,9 @@ const RecipeForm = (props: {
       ></div>
       <form
         onSubmit={(e) => handleSubmit(e, { ...form, content })}
-        className="z-20 m-4 flex w-full flex-col justify-center gap-2 rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-8 shadow-xl"
+        className="z-20 m-4 flex h-full w-full flex-col justify-center gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl"
       >
-        <h1 className="mb-4 text-center text-xl font-thin uppercase tracking-widest text-white">
+        <h1 className="-mt-64 mb-4 text-center text-xl font-thin uppercase tracking-widest text-white">
           Vytvořit Recept
         </h1>
         <label className="form-label" htmlFor="title">
@@ -128,7 +128,7 @@ const RecipeForm = (props: {
         <button
           type="button"
           onClick={openSelectFile}
-          className="flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+          className=" mx-auto mt-2 flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
         >
           <FiImage /> {file ? file.name : "Vybrat obrázek"}
         </button>

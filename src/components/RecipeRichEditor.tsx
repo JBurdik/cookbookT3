@@ -110,7 +110,7 @@ const RecipeRichEditor = ({
         <EditorContent
           editor={editor}
           onChange={() => alert("Change textEditor")}
-          className="mt-6"
+          className="mt-4"
         />
       </div>
     </>

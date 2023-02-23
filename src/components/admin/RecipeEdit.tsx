@@ -102,12 +102,14 @@ function RecipeEdit(props: {
         className="absolute inset-0 z-10 cursor-pointer"
         onClick={() => setEditId("")}
       ></div>
-      <div className="z-20 flex flex-col items-center justify-center gap-2 rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-8 shadow-xl">
-        <h1>Editace receptu</h1>
+      <div className="relative z-20 m-4 flex h-full w-full flex-col items-center justify-center gap-2 rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] shadow-xl">
         <form
           onSubmit={(e) => handleForm(e)}
-          className="flex flex-col items-center justify-center gap-2"
+          className="flex h-full w-full flex-col justify-center gap-2 overflow-y-scroll p-4 shadow-xl"
         >
+          <h1 className="mb-4 text-center text-xl font-thin uppercase tracking-widest text-white">
+            Editace receptu
+          </h1>
           <label className="form-label" htmlFor="title">
             Název receptu
           </label>
@@ -160,16 +162,17 @@ function RecipeEdit(props: {
           <button
             type="button"
             onClick={openSelectFile}
-            className="flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+            className=" mx-auto flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
           >
             <FiImage /> {file ? file.name : "Vybrat obrázek"}
           </button>
 
-          <input
+          <button
             type="submit"
-            value="Uložit"
-            className="flex w-fit cursor-pointer flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
-          />
+            className="mt-4 cursor-pointer rounded-xl bg-purple-400 p-2 font-light uppercase tracking-widest transition-all hover:bg-purple-700"
+          >
+            Uložit
+          </button>
         </form>
 
         {/* <FileInput onChange={handleFileChange} /> */}
