@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 body {
-  @apply text-white;
+  @apply h-screen w-screen text-white;
+}
+* {
+  box-sizing: border-box;
 }
 h1 {
   @apply text-4xl font-extrabold tracking-tight text-white;

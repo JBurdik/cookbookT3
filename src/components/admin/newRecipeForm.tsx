@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useRef, useState } from "react";
 
 import { useS3Upload } from "next-s3-upload";
+import { FaTimes } from "react-icons/fa";
 import { FiImage } from "react-icons/fi";
 import { api } from "../../utils/api";
 import RecipeRichEditor from "../RecipeRichEditor";
@@ -84,61 +85,69 @@ const RecipeForm = (props: {
   if (!isOpen) return <></>;
   return (
     <div
-      className={`fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/80`}
+      className={`fixed inset-0 flex items-center justify-center bg-black/80 py-4 `}
     >
       <div
         className="absolute inset-0 z-10"
         onClick={() => setIsOpen(false)}
       ></div>
-      <form
-        onSubmit={(e) => handleSubmit(e, { ...form, content })}
-        className="z-20 m-4 flex h-full w-full flex-col justify-center gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl"
-      >
-        <h1 className="-mt-64 mb-4 text-center text-xl font-thin uppercase tracking-widest text-white">
+      <div className="absolute z-30 flex max-h-96 w-full flex-col justify-center gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl md:max-w-3xl">
+        <div
+          className="absolute right-2 top-2 z-50"
+          onClick={() => setIsOpen(false)}
+        >
+          <FaTimes size={20} />
+        </div>
+        <h1 className="mt-4 text-center text-lg font-thin uppercase tracking-widest text-white">
           Vytvořit Recept
         </h1>
-        <label className="form-label" htmlFor="title">
-          Název Receptu:
-        </label>
-        <input
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-          value={form.title}
-          className="form-input"
-          type="text"
-          name="title"
-        />
-        <label className="form-label" htmlFor="ingredients">
-          Ingredience oddělené čárkou:
-        </label>
-        <input
-          onChange={(e) => setForm({ ...form, ingredients: e.target.value })}
-          value={form.ingredients}
-          className="form-input"
-          type="text"
-          name="ingredients"
-        />
-        <label className="form-label">Popis Receptu:</label>
-        <RecipeRichEditor content={content} setContent={setContent} />
-        <input
-          type="file"
-          ref={refFileInput}
-          className="hidden"
-          onChange={(e) => handleFile(e.target.files && e.target.files[0])}
-        />
-        <button
-          type="button"
-          onClick={openSelectFile}
-          className=" mx-auto mt-2 flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+        <form
+          onSubmit={(e) => handleSubmit(e, { ...form, content })}
+          className="flex flex-col gap-2"
         >
-          <FiImage /> {file ? file.name : "Vybrat obrázek"}
-        </button>
-        <button
-          type="submit"
-          className="mt-4 cursor-pointer rounded-xl bg-purple-400 p-2 font-light uppercase tracking-widest transition-all hover:bg-purple-700"
-        >
-          Vytvorit Recept
-        </button>
-      </form>
+          <label className="form-label" htmlFor="title">
+            Název Receptu:
+          </label>
+          <input
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            value={form.title}
+            className="form-input"
+            type="text"
+            name="title"
+          />
+          <label className="form-label" htmlFor="ingredients">
+            Ingredience oddělené čárkou:
+          </label>
+          <input
+            onChange={(e) => setForm({ ...form, ingredients: e.target.value })}
+            value={form.ingredients}
+            className="form-input"
+            type="text"
+            name="ingredients"
+          />
+          <label className="form-label">Popis Receptu:</label>
+          <RecipeRichEditor content={content} setContent={setContent} />
+          <input
+            type="file"
+            ref={refFileInput}
+            className="hidden"
+            onChange={(e) => handleFile(e.target.files && e.target.files[0])}
+          />
+          <button
+            type="button"
+            onClick={openSelectFile}
+            className=" mx-auto mt-2 flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+          >
+            <FiImage /> {file ? file.name : "Vybrat obrázek"}
+          </button>
+          <button
+            type="submit"
+            className="mt-4 cursor-pointer rounded-xl bg-purple-400 p-2 font-light uppercase tracking-widest transition-all hover:bg-purple-700"
+          >
+            Vytvorit Recept
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

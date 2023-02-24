@@ -82,7 +82,7 @@ const RecipeRichEditor = ({
   const editor = useEditor({
     editorProps: {
       attributes: {
-        class: "focus:outline-none w-full min-h-[300px]",
+        class: "focus:outline-none w-full",
       },
     },
     extensions: [
@@ -102,7 +102,7 @@ const RecipeRichEditor = ({
 
   return (
     <>
-      <div className="relative flex w-full flex-col gap-4 border border-white bg-white/40 p-4">
+      <div className="relative flex h-auto w-full flex-col gap-4 border border-white bg-white/40">
         <MenuBar
           editor={editor}
           className=" absolute inset-x-0 top-0 m-0 flex flex-row bg-white text-black"
@@ -110,7 +110,7 @@ const RecipeRichEditor = ({
         <EditorContent
           editor={editor}
           onChange={() => alert("Change textEditor")}
-          className="mt-4"
+          className="mt-8"
         />
       </div>
     </>
