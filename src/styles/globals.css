@@ -17,6 +17,9 @@ h2 {
 h5 {
   @apply text-lg font-bold text-white;
 }
+ul {
+  @apply ml-6 list-disc;
+}
 .form-input {
   @apply rounded-md bg-white/70 py-2 px-4 text-white shadow-md shadow-black outline-none;
 }

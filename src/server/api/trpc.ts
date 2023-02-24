@@ -102,7 +102,10 @@ export const publicProcedure = t.procedure;
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Pro tuto operaci je potřeba být přihlášený",
+    });
   }
   return next({
     ctx: {
@@ -125,7 +128,10 @@ export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
 export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (ctx.session?.user?.role != "ADMIN") {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Nedostatečné oprávnění pro tuto operaci",
+    });
   }
   return next();
 });

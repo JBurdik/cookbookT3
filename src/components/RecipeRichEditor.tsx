@@ -1,7 +1,7 @@
 import type { Editor } from "@tiptap/react";
 import { EditorContent, generateHTML, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { FaBold, FaHeading } from "react-icons/fa";
+import { FaBold, FaHeading, FaList } from "react-icons/fa";
 import type { JSONObject } from "superjson/dist/types";
 
 const MenuBar = ({
@@ -68,6 +68,16 @@ const MenuBar = ({
         <FaHeading />
         <span className="text-xs">sm</span>
       </button>
+      <button
+        className={`flex flex-row p-1 ${
+          editor.isActive("bulletList") ? "text-black" : "text-gray-400"
+        }`}
+        onClick={(e) => (
+          e.preventDefault(), editor.chain().focus().toggleBulletList().run()
+        )}
+      >
+        <FaList />
+      </button>
     </div>
   );
 };
@@ -99,7 +109,6 @@ const RecipeRichEditor = ({
       ? generateHTML(JSON.parse(content) as JSONObject, [StarterKit])
       : "<p>Zde vepiš obsah receptu</p>",
   });
-
   return (
     <>
       <div className="relative flex h-auto w-full flex-col gap-4 border border-white bg-white/40">
@@ -110,7 +119,7 @@ const RecipeRichEditor = ({
         <EditorContent
           editor={editor}
           onChange={() => alert("Change textEditor")}
-          className="mt-8"
+          className="mx-2 mt-8 mb-2"
         />
       </div>
     </>
