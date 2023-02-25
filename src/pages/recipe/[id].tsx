@@ -20,20 +20,25 @@ const Recipe = () => {
   const output = generateContent(JSON.parse(recept.content) as JSONObject);
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-center gap-4">
+      <div className="flex w-full flex-col items-center justify-center gap-4">
         {recept && (
           <>
-            <div className="relative flex h-64 w-96 items-center justify-center">
-              <Image
-                src={recept.imgUrl}
-                fill
-                className="rounded-xl object-cover"
-                alt={recept.title}
-              />
+            <div className="flex w-full max-w-4xl flex-col overflow-hidden rounded-lg p-2 nm-flat-gray-900-lg">
+              <div className="relative h-96 w-full overflow-hidden rounded-3xl">
+                <Image
+                  src={recept.imgUrl}
+                  fill
+                  className="overflow-hidden rounded-xl object-cover"
+                  alt={recept.title}
+                />
+              </div>
+
+              <h1 className="mt-2 ml-2">{recept.title}</h1>
+              <div
+                className="container flex max-w-4xl flex-col justify-start py-3 pl-6 text-white"
+                dangerouslySetInnerHTML={{ __html: output }}
+              ></div>
             </div>
-            <h1>{recept.title}</h1>
-            <p dangerouslySetInnerHTML={{ __html: output }}></p>
-            <p>{recept.ingredients}</p>
           </>
         )}
       </div>

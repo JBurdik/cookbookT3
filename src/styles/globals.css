@@ -9,13 +9,13 @@ body {
   box-sizing: border-box;
 }
 h1 {
-  @apply text-4xl font-extrabold tracking-tight text-white;
+  @apply text-4xl font-light tracking-normal;
 }
 h2 {
-  @apply text-2xl font-extrabold tracking-tight text-white;
+  @apply text-2xl font-light tracking-tight;
 }
 h5 {
-  @apply text-lg font-bold text-white;
+  @apply text-lg font-light tracking-tight;
 }
 ul {
   @apply ml-6 list-disc;
