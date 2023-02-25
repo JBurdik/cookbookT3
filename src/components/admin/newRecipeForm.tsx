@@ -97,8 +97,8 @@ const RecipeForm = (props: {
       >
         <FaTimes size={20} />
       </div>
-      <div className="relative z-30 h-5/6 w-full justify-center gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl md:max-w-3xl">
-        <div className="flex h-full w-full flex-col justify-center">
+      <div className="relative z-30 flex max-h-[90%] w-full justify-center gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl md:max-w-3xl">
+        <div className="flex w-full flex-col  ">
           <h1 className="my-4 text-center text-lg font-thin uppercase tracking-widest text-white">
             Vytvořit Recept
           </h1>
