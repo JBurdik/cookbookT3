@@ -15,7 +15,7 @@ import type { JSONObject } from "superjson/dist/types";
 
 function Home() {
   const news = api.news.getNews.useQuery(undefined).data;
-  const getRecipes = api.recipes.getAll.useQuery().data;
+  const getRecipes = api.recipes.getAll.useQuery();
   const options = api.options.getAll.useQuery().data;
   const [recipes, setRecipes] = useState<Recepty[]>();
 
@@ -25,8 +25,9 @@ function Home() {
     return output;
   };
 
-  if (getRecipes && !recipes) {
-    setRecipes([...getRecipes]);
+  if (getRecipes.data && !recipes) {
+    const recipes = getRecipes.data;
+    setRecipes([...recipes]);
   }
   if (options?.underConstruction)
     return (
@@ -68,6 +69,14 @@ function Home() {
               })}
           </div>
           <h2 className="text-3xl">Recepty: </h2>
+          {getRecipes.isLoading && (
+            <div className="flex flex-col items-center justify-center gap-5">
+              <BounceLoader color="#786298" />
+              <p className="text-xs font-extralight uppercase tracking-widest">
+                Načítám recepty...
+              </p>
+            </div>
+          )}
           <div className="max-w-5xlxl grid h-full w-full grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
             {recipes ? (
               recipes.map((recipe, i) => {
@@ -108,12 +117,7 @@ function Home() {
                 );
               })
             ) : (
-              <div className="flex flex-col items-center justify-center gap-5">
-                <BounceLoader color="#786298" />
-                <p className="text-xs font-extralight uppercase tracking-widest">
-                  Načítám recepty...
-                </p>
-              </div>
+              <></>
             )}
           </div>
           <div className="flex flex-col items-center justify-center gap-4"></div>
