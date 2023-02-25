@@ -14,7 +14,6 @@ import { BounceLoader } from "react-spinners";
 import type { JSONObject } from "superjson/dist/types";
 
 function Home() {
-  const news = api.news.getNews.useQuery(undefined).data;
   const getRecipes = api.recipes.getAll.useQuery();
   const options = api.options.getAll.useQuery().data;
   const [recipes, setRecipes] = useState<Recepty[]>();
@@ -46,28 +45,12 @@ function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gray-900">
         <div className="container flex flex-col items-center justify-center gap-12 px-6 py-16 ">
           <h1 className="sm:text-[5rem]">
             {options?.name}{" "}
             <span className="text-[hsl(280,100%,70%)]">Kuchařka</span>
           </h1>
-          <div className="grid grid-cols-2 items-center justify-center gap-4">
-            {news &&
-              options?.showNews &&
-              news.map((item, i) => {
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-                  >
-                    <h3 className="text-2xl font-bold">{item.title}</h3>
-
-                    <p className="text-lg">{item.title}</p>
-                  </div>
-                );
-              })}
-          </div>
           <h2 className="text-3xl">Recepty: </h2>
           {getRecipes.isLoading && (
             <div className="flex flex-col items-center justify-center gap-5">
@@ -77,7 +60,7 @@ function Home() {
               </p>
             </div>
           )}
-          <div className="max-w-5xlxl grid h-full w-full grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="flex h-full w-full max-w-5xl flex-col items-center justify-center gap-4">
             {recipes ? (
               recipes.map((recipe, i) => {
                 const output = generateContent(
@@ -86,14 +69,14 @@ function Home() {
                 return (
                   <Link
                     href={`/recipe/${recipe.id}`}
-                    className="h-full"
+                    className="w-full"
                     key={recipe.id}
                   >
                     <div
                       key={i}
-                      className="flex h-full flex-col items-center justify-start gap-4 rounded-xl bg-white/10 p-4 text-white transition-all hover:bg-white/20"
+                      className="relative grid h-80 grid-cols-2 justify-start gap-4 overflow-hidden rounded-lg p-4 text-white transition-all nm-flat-gray-900 hover:nm-flat-gray-900-sm"
                     >
-                      <div className="relative flex h-80 w-full items-center justify-center">
+                      <div className="relative block h-72 w-full items-center justify-center">
                         <Image
                           src={recipe.imgUrl}
                           fill
@@ -101,17 +84,14 @@ function Home() {
                           alt={recipe.title}
                         />
                       </div>
-                      <h3 className="text-2xl font-bold">{recipe.title}</h3>
+                      <div>
+                        <h1 className="text-5xl">{recipe.title}</h1>
 
-                      <p
-                        className="text-lg"
-                        dangerouslySetInnerHTML={{ __html: output }}
-                      ></p>
-
-                      {recipe.ingredients &&
-                        recipe.ingredients
-                          .split(",")
-                          .map((item, i) => <p key={i}>{item}</p>)}
+                        <div
+                          className=""
+                          dangerouslySetInnerHTML={{ __html: output }}
+                        ></div>
+                      </div>
                     </div>
                   </Link>
                 );

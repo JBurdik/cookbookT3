@@ -2,6 +2,13 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 
+import { Montserrat } from "@next/font/google";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
+
 import { api } from "../utils/api";
 
 import Head from "next/head";
@@ -20,7 +27,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Component {...pageProps} />
+      <main className={montserrat.className}>
+        <Component {...pageProps} />
+      </main>
     </SessionProvider>
   );
 };

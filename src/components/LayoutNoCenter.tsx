@@ -5,7 +5,7 @@ const LayooutNoCenter = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { pathname } = router;
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+    <main className="flex min-h-screen flex-col bg-gray-900">
       {pathname != "/" ? (
         <Link href="/">
           <RiHome2Line />
