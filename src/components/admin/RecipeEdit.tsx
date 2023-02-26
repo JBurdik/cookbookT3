@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { Difficulty } from "@prisma/client";
 import { useS3Upload } from "next-s3-upload";
 import React, { useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
@@ -11,6 +12,10 @@ export interface EditFormData {
   title: string;
   content: string;
   ingredients: string;
+  time: number;
+  difficulty: Difficulty;
+  portions: number;
+  imgUrl: string;
 }
 
 function RecipeEdit(props: {
@@ -147,6 +152,34 @@ function RecipeEdit(props: {
                 recipe && setRecipe({ ...recipe, ingredients: e.target.value })
               }
             />
+            <label className="form-label" htmlFor="difficulty">
+              Obtížnost
+            </label>
+            <select className="form-input" name="">
+              <option value={Difficulty.EASY}>Jednoduché</option>
+              <option value={Difficulty.MEDIUM}>Střední</option>
+              <option value={Difficulty.HARD}>Těžké</option>
+              <option value={Difficulty.EXTRAHARD}>Extra Těžké</option>
+            </select>
+            <div className="form-group">
+              <span className="flex w-full flex-col items-start gap-1">
+                <label className="form-label" htmlFor="time">
+                  Doba přípravy
+                </label>
+                <input
+                  className="form-input"
+                  type="text"
+                  name="time"
+                  id="time"
+                />
+              </span>
+              <span className="flex w-full flex-col items-start gap-1">
+                <label className="form-label" htmlFor="portions">
+                  Počet porcí
+                </label>
+                <input className="form-input" type="text" name="portions" />
+              </span>
+            </div>
             <label className="form-label" htmlFor="content">
               Popis receptu
             </label>

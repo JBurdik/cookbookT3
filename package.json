@@ -11,6 +11,7 @@
     "dbpush": "prisma db push"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.279.0",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@next/font": "^13.2.1",
     "@prisma/client": "^4.8.0",

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { DeleteObjectCommand, ListObjectsCommand } from "@aws-sdk/client-s3";
+import { env } from "../../../env/server.mjs";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const exampleRouter = createTRPCRouter({
@@ -43,5 +45,22 @@ export const exampleRouter = createTRPCRouter({
         },
       });
       return { tiptap };
+    }),
+  getS3List: publicProcedure.query(async ({ ctx }) => {
+    const list = await ctx.s3Client.send(
+      new ListObjectsCommand({ Bucket: env.S3_UPLOAD_BUCKET })
+    );
+    return list;
+  }),
+  deleteFromS3: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const deleted = await ctx.s3Client.send(
+        new DeleteObjectCommand({
+          Bucket: env.S3_UPLOAD_BUCKET,
+          Key: input,
+        })
+      );
+      return deleted;
     }),
 });
