@@ -3,11 +3,13 @@ import { APIRoute } from "next-s3-upload";
 
 export default APIRoute.configure({
   key(req: NextApiRequest, filename) {
-    const { receptId, folder } = req.body as {
-      receptId: string;
+    const { id, folder } = req.body as {
+      id: string | undefined;
       folder: string;
     };
-
-    return `${folder}/${receptId}/${filename}`;
+    if (!id) {
+      return `${folder}/${filename}`;
+    }
+    return `${folder}/${id}/${filename}`;
   },
 });

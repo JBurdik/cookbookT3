@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import type { _Object } from "@aws-sdk/client-s3";
+import { useS3Upload } from "next-s3-upload";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { FaFileAlt } from "react-icons/fa";
+import { RiUploadCloud2Fill } from "react-icons/ri";
 import Layout from "../components/Layout";
 import { api } from "../utils/api";
 // Import required AWS SDK clients and commands for Node.js.
@@ -9,21 +12,59 @@ import { api } from "../utils/api";
 function Test() {
   // const bucketParams = { Bucket: process.env.S3_UPLOAD_BUCKET };
   // const data = s3Client.send(new ListObjectsCommand(bucketParams));
+  const [file, setFile] = useState<File>();
   const [objectList, setObjectList] = useState<_Object[]>();
   const listQuery = api.example.getS3List.useQuery();
+  const refetchFiles = async () => {
+    await listQuery.refetch();
+    return listQuery.data?.Contents || [];
+  };
   const deleteObject = api.example.deleteFromS3.useMutation({
-    async onSuccess(data) {
+    onSuccess() {
       setObjectList(undefined);
-      await listQuery.refetch();
-      console.log("deleteobject: ", data);
+      const refetched = refetchFiles();
+      setObjectList(refetched);
     },
   });
   if (listQuery.isFetched && objectList == undefined)
     setObjectList(listQuery.data?.Contents || []);
-  console.log(objectList);
+
+  const { uploadToS3 } = useS3Upload();
+  const uplodadImage = (file: File) => {
+    const upload = uploadToS3(file, {
+      endpoint: {
+        request: {
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: {
+            folder: "test",
+          },
+        },
+      },
+    });
+    console.log(upload);
+  };
+
+  const handleUpload = () => {
+    if (!file) return;
+    uplodadImage(file);
+    const refetched = refetchFiles();
+    setObjectList(refetched);
+  };
   return (
     <Layout>
       <h1>Test</h1>
+      <h2>Momentálně se zobrazuje veškerý obsah s3 bucketu</h2>
+      <div className="flex gap-3">
+        <FileInput file={file} setFile={setFile} />
+        <button
+          onClick={() => handleUpload()}
+          className="flex items-center justify-center rounded-3xl border border-teal-500 p-4"
+        >
+          <RiUploadCloud2Fill className="text-teal-500" size={75} />
+        </button>
+      </div>
       <div className="grid grid-cols-4 gap-2">
         {objectList?.map((item, i) => {
           if (!item.Key) return null;
@@ -48,5 +89,47 @@ function Test() {
     </Layout>
   );
 }
+
+export const FileInput = ({
+  file,
+  setFile,
+}: {
+  file: File | undefined;
+  setFile: (arg: File | undefined) => void;
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setFile(e.target.files[0]);
+  };
+  return (
+    <div className="flex flex-col items-center justify-center gap-4">
+      <input
+        ref={fileInputRef}
+        onChange={handleFileSelect}
+        className="hidden"
+        type="file"
+      />
+      <button
+        onClick={handleClick}
+        className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-teal-600 p-4"
+      >
+        <FaFileAlt size={75} />
+        {file ? (
+          <span className="text-xl font-bold uppercase tracking-wider">
+            {file.name}
+          </span>
+        ) : (
+          <span className="text-xl font-bold uppercase tracking-wider">
+            Vybrat soubor
+          </span>
+        )}
+      </button>
+    </div>
+  );
+};
 
 export default Test;

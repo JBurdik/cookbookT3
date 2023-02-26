@@ -68,7 +68,7 @@ const RecipeForm = (props: {
             "Content-Type": file.type,
           },
           body: {
-            receptId: recipeId,
+            id: recipeId,
             folder: "recepty",
           },
         },
