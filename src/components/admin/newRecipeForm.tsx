@@ -89,7 +89,7 @@ const RecipeForm = (props: {
   if (!isOpen) return <></>;
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center bg-black/80 py-4 `}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 py-4 `}
     >
       <div
         className="absolute inset-0 z-10"
