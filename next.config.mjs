@@ -20,6 +20,8 @@ const config = {
       "cookbook-t3.s3.eu-central-1.amazonaws.com",
       "picsum.photos",
       "via.placeholder.com",
+      "cdn.discordapp.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };
