@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import type { _Object } from "@aws-sdk/client-s3";
-import { useS3Upload } from "next-s3-upload";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { FaFileAlt } from "react-icons/fa";
@@ -15,42 +14,50 @@ function Test() {
   const [file, setFile] = useState<File>();
   const [objectList, setObjectList] = useState<_Object[]>();
   const listQuery = api.example.getS3List.useQuery();
+  const presignedUrl = api.example.createPresignedUrl.useQuery().data;
   const refetchFiles = async () => {
-    await listQuery.refetch();
-    return listQuery.data?.Contents || [];
+    const refetched = await listQuery.refetch();
+    return refetched.data?.Contents;
   };
   const deleteObject = api.example.deleteFromS3.useMutation({
-    onSuccess() {
+    async onSuccess() {
       setObjectList(undefined);
-      const refetched = refetchFiles();
+      const refetched = await refetchFiles();
       setObjectList(refetched);
     },
   });
   if (listQuery.isFetched && objectList == undefined)
     setObjectList(listQuery.data?.Contents || []);
 
-  const { uploadToS3 } = useS3Upload();
-  const uplodadImage = (file: File) => {
-    const upload = uploadToS3(file, {
-      endpoint: {
-        request: {
-          headers: {
-            "Content-Type": file.type,
-          },
-          body: {
-            folder: "test",
-          },
-        },
-      },
-    });
-    console.log(upload);
-  };
+  // const { uploadToS3 } = useS3Upload();
+  // const uplodadImage = async (file: File) => {
+  //   await uploadToS3(file, {
+  //     endpoint: {
+  //       request: {
+  //         headers: {
+  //           "Content-Type": file.type,
+  //         },
+  //         body: {
+  //           folder: "test",
+  //         },
+  //       },
+  //     },
+  //   });
+  // };
 
-  const handleUpload = () => {
-    if (!file) return;
-    uplodadImage(file);
-    const refetched = refetchFiles();
-    setObjectList(refetched);
+  const handleUpload = async () => {
+    if (!file || !presignedUrl) return;
+    const uploadFile = await fetch(presignedUrl?.url, {
+      method: "PUT",
+      body: file,
+    });
+    if (uploadFile.ok) {
+      console.log(`Uploaded file ${file.name} successfully.`);
+      setFile(undefined);
+    }
+    // await uplodadImage(file);
+    // const refetched = await refetchFiles();
+    // setObjectList(refetched);
   };
   return (
     <Layout>
@@ -59,13 +66,16 @@ function Test() {
       <div className="flex gap-3">
         <FileInput file={file} setFile={setFile} />
         <button
-          onClick={() => handleUpload()}
+          onClick={(e) => {
+            e.preventDefault();
+            handleUpload().catch((e) => console.error(e));
+          }}
           className="flex items-center justify-center rounded-3xl border border-teal-500 p-4"
         >
           <RiUploadCloud2Fill className="text-teal-500" size={75} />
         </button>
       </div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         {objectList?.map((item, i) => {
           if (!item.Key) return null;
           return (
@@ -78,6 +88,7 @@ function Test() {
             >
               <Image
                 fill
+                sizes="100% 100%"
                 alt={i.toString()}
                 className="object-cover object-right transition-all group-hover:scale-110 group-hover:blur-sm group-hover:grayscale"
                 src={`https://cookbook-t3.s3.eu-central-1.amazonaws.com/${item.Key}`}

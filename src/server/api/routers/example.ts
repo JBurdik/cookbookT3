@@ -1,6 +1,12 @@
 import { z } from "zod";
 
-import { DeleteObjectCommand, ListObjectsCommand } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectCommand,
+  ListObjectsCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { uuid } from "next-s3-upload";
 import { env } from "../../../env/server.mjs";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
@@ -62,5 +68,18 @@ export const exampleRouter = createTRPCRouter({
         })
       );
       return deleted;
+    }),
+  createPresignedUrl: publicProcedure
+    .input(z.optional(z.string()))
+    .query(async ({ ctx, input }) => {
+      const key = input ? `${input}/` : `${uuid()}`;
+      const url = await getSignedUrl(
+        ctx.s3Client,
+        new PutObjectCommand({
+          Bucket: env.S3_UPLOAD_BUCKET,
+          Key: key,
+        })
+      );
+      return { url, key };
     }),
 });
