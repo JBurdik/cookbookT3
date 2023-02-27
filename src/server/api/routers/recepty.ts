@@ -58,7 +58,7 @@ export const recipesRouter = createTRPCRouter({
           title: input.title,
           content: input.content,
           ingredients: input.ingredients,
-          imgUrl: "https://picsum.photos/200/300",
+          imgUrl: "https://via.placeholder.com/300.webp",
         },
       });
       return { newRecipe };
