@@ -76,7 +76,10 @@ function Home() {
                   >
                     <div
                       key={i}
-                      className="relative grid h-80 grid-cols-2 justify-start gap-4 overflow-hidden rounded-lg p-4 text-white transition-all nm-flat-gray-900 hover:nm-flat-gray-900-sm"
+                      className="relative 
+                      grid grid-cols-1 justify-start gap-4 
+                      overflow-hidden rounded-lg p-4 text-white transition-all 
+                      nm-flat-gray-900 hover:nm-flat-gray-900-sm md:h-80 md:grid-cols-2"
                     >
                       <div className="relative block h-72 w-full items-center justify-center">
                         <Image
@@ -87,7 +90,9 @@ function Home() {
                         />
                       </div>
                       <div className="flex w-full flex-col items-center justify-center">
-                        <h1 className="text-5xl">{recipe.title}</h1>
+                        <h1 className="text-5xl md:text-4xl lg:text-5xl">
+                          {recipe.title}
+                        </h1>
                         <div className="my-4 grid grid-cols-3 place-items-center justify-center gap-4 rounded-md bg-white/20 p-2">
                           <span className="flex flex-col items-center justify-center gap-1">
                             <FaClock size={20} />
