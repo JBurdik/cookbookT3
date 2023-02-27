@@ -6,22 +6,27 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { api } from "../utils/api";
 
-import { generateHTML } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import Image from "next/image";
+import { FaClock, FaSignal, FaUsers } from "react-icons/fa";
 import { FiAlertTriangle } from "react-icons/fi";
 import { BounceLoader } from "react-spinners";
-import type { JSONObject } from "superjson/dist/types";
 
 function Home() {
   const getRecipes = api.recipes.getAll.useQuery();
   const options = api.options.getAll.useQuery().data;
   const [recipes, setRecipes] = useState<Recepty[]>();
 
-  const generateContent = (json: JSONObject) => {
-    const output = generateHTML(json, [StarterKit]);
-    console.log(output);
-    return output;
+  const Dificulty = (dificulty: string) => {
+    switch (dificulty) {
+      case "EASY":
+        return "Snadná";
+      case "MEDIUM":
+        return "Střední";
+      case "HARD":
+        return "Těžká";
+      case "EXTRAHARD":
+        return "Extrémně těžká";
+    }
   };
 
   if (getRecipes.data && !recipes) {
@@ -63,9 +68,6 @@ function Home() {
           <div className="flex h-full w-full max-w-5xl flex-col items-center justify-center gap-4">
             {recipes ? (
               recipes.map((recipe, i) => {
-                const output = generateContent(
-                  JSON.parse(recipe.content) as JSONObject
-                );
                 return (
                   <Link
                     href={`/recipe/${recipe.id}`}
@@ -74,7 +76,10 @@ function Home() {
                   >
                     <div
                       key={i}
-                      className="relative grid h-80 grid-cols-2 justify-start gap-4 overflow-hidden rounded-lg p-4 text-white transition-all nm-flat-gray-900 hover:nm-flat-gray-900-sm"
+                      className="relative 
+                      grid grid-cols-1 justify-start gap-4 
+                      overflow-hidden rounded-lg p-4 text-white transition-all 
+                      nm-flat-gray-900 hover:nm-flat-gray-900-sm md:h-80 md:grid-cols-2"
                     >
                       <div className="relative block h-72 w-full items-center justify-center">
                         <Image
@@ -84,13 +89,25 @@ function Home() {
                           alt={recipe.title}
                         />
                       </div>
-                      <div>
-                        <h1 className="text-5xl">{recipe.title}</h1>
-
-                        <div
-                          className=""
-                          dangerouslySetInnerHTML={{ __html: output }}
-                        ></div>
+                      <div className="flex w-full flex-col items-center justify-center">
+                        <h1 className="text-5xl md:text-4xl lg:text-5xl">
+                          {recipe.title}
+                        </h1>
+                        <div className="my-4 grid grid-cols-3 place-items-center justify-center gap-4 rounded-md bg-white/20 p-2">
+                          <span className="flex flex-col items-center justify-center gap-1">
+                            <FaClock size={20} />
+                            {recipe.time} min.
+                          </span>
+                          <span className="flex flex-col items-center justify-center gap-1">
+                            <FaSignal size={20} />
+                            {Dificulty(recipe.difficulty)}
+                          </span>
+                          <span className="flex flex-col items-center justify-center gap-1">
+                            <FaUsers size={20} />
+                            {recipe.portions}
+                          </span>
+                        </div>
+                        <p>Zobrazit recept</p>
                       </div>
                     </div>
                   </Link>

@@ -2,6 +2,7 @@ import { exampleRouter } from "./routers/example";
 import { newsRouter } from "./routers/news";
 import { optionsRouter } from "./routers/options";
 import { recipesRouter } from "./routers/recepty";
+import { s3Router } from "./routers/s3";
 import { usersRouter } from "./routers/users";
 import { createTRPCRouter } from "./trpc";
 
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   recipes: recipesRouter,
   options: optionsRouter,
   users: usersRouter,
+  s3: s3Router,
 });
 
 // export type definition of API

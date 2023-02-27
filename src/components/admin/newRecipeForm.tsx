@@ -30,11 +30,11 @@ const RecipeForm = (props: {
   });
   const newRecipe = api.recipes.newRecipe.useMutation({
     onSuccess: async (data) => {
-      console.log("onSuccess: ", data);
       if (file) {
         await uplodadImage(file, data.newRecipe.id);
       }
       props.onSubmit(data.newRecipe);
+      alert(`Recept ${data.newRecipe.title} byl úspěšně přidán`);
       setIsOpen(false);
     },
   });
@@ -47,7 +47,12 @@ const RecipeForm = (props: {
     },
   });
   function createRecipe(data: FormData) {
+    if (content === "") {
+      alert("Recept musí mít obsah");
+      return;
+    }
     newRecipe.mutate(data);
+    setForm({ title: "", content: "", ingredients: "" });
   }
   // file upload
   const openSelectFile = () => {
@@ -68,7 +73,7 @@ const RecipeForm = (props: {
             "Content-Type": file.type,
           },
           body: {
-            receptId: recipeId,
+            id: recipeId,
             folder: "recepty",
           },
         },
@@ -80,7 +85,6 @@ const RecipeForm = (props: {
   const handleSubmit = (e: FormEvent, data: FormData) => {
     e.preventDefault();
     createRecipe(data);
-    setForm({ title: "", content: "", ingredients: "" });
   };
   if (!isOpen) return <></>;
   return (
@@ -102,6 +106,7 @@ const RecipeForm = (props: {
           <h1 className="my-4 text-center text-lg font-thin uppercase tracking-widest text-white">
             Vytvořit Recept
           </h1>
+          {content}
           <form
             onSubmit={(e) => handleSubmit(e, { ...form, content })}
             className="flex h-auto flex-col gap-2"

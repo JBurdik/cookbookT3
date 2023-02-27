@@ -21,6 +21,9 @@ model Recepty {
   content     String
   ingredients String
   imgUrl      String @default("https://via.placeholder.com/150")
+  time        Int    @default(0)
+  difficulty  Difficulty   @default(EASY)
+  portions    Int    @default(4)
 }
 
 model News {
@@ -94,4 +97,10 @@ model Tiptap {
 enum Role {
   USER
   ADMIN
+}
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXTRAHARD
 }

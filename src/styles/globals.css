@@ -21,10 +21,13 @@ ul {
   @apply ml-6 list-disc;
 }
 .form-input {
-  @apply rounded-md bg-white/70 py-2 px-4 text-white shadow-md shadow-black outline-none;
+  @apply w-full rounded-md bg-white/70 py-2 px-4 text-white shadow-md shadow-black outline-none;
 }
 .form-label {
   @apply text-xs font-thin uppercase tracking-widest;
+}
+.form-group {
+  @apply flex w-full flex-row items-center justify-center gap-4;
 }
 .opt-form {
   @apply flex flex-col items-center justify-center gap-4;

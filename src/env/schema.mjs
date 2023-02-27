@@ -25,6 +25,10 @@ export const serverSchema = z.object({
   GITHUB_CLIENT_SECRET: z.string(),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
+  S3_UPLOAD_KEY: z.string(),
+  S3_UPLOAD_SECRET: z.string(),
+  S3_UPLOAD_BUCKET: z.string(),
+  S3_UPLOAD_REGION: z.string(),
 });
 /**
  * You can't destruct `process.env` as a regular object in the Next.js
@@ -42,6 +46,10 @@ export const serverEnv = {
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  S3_UPLOAD_KEY: process.env.S3_UPLOAD_KEY,
+  S3_UPLOAD_SECRET: process.env.S3_UPLOAD_SECRET,
+  S3_UPLOAD_BUCKET: process.env.S3_UPLOAD_BUCKET,
+  S3_UPLOAD_REGION: process.env.S3_UPLOAD_REGION,
 };
 
 /**
@@ -50,6 +58,7 @@ export const serverEnv = {
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
+  NEXT_PUBLIC_S3_UPLOAD_URL: z.string(),
   // NEXT_PUBLIC_CLIENTVAR: z.string(),
 });
 
@@ -60,5 +69,6 @@ export const clientSchema = z.object({
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
  */
 export const clientEnv = {
+  NEXT_PUBLIC_S3_UPLOAD_URL: process.env.NEXT_PUBLIC_S3_UPLOAD_URL,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
