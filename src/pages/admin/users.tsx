@@ -16,17 +16,17 @@ const Users = () => {
     switch (usersLength) {
       case 1:
         {
-          setGridCols("grid-cols-1");
+          setGridCols("1");
         }
         break;
       case 2:
         {
-          setGridCols("grid-cols-2");
+          setGridCols("2");
         }
         break;
 
       default: {
-        setGridCols("grid-cols-3");
+        setGridCols("3");
       }
     }
   };
@@ -61,7 +61,9 @@ const Users = () => {
             ))}
         </tbody>
       </table> */}
-      <div className={`grid grid-cols-1 gap-2 md:${gridCols}`}>
+      <div
+        className={`grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-${gridCols}`}
+      >
         {filteredUsers &&
           filteredUsers.map((user) => <SingleUser key={user.id} user={user} />)}
       </div>

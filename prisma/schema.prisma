@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL")
   url      = env("SUPABASE_URL")
 }
 
@@ -15,15 +14,17 @@ model Example {
 }
 
 model Recepty {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
+  id          String     @id @unique @default(cuid())
+  createdAt   DateTime   @default(now())
   title       String
   content     String
   ingredients String
-  imgUrl      String @default("https://via.placeholder.com/150")
-  time        Int    @default(0)
-  difficulty  Difficulty   @default(EASY)
-  portions    Int    @default(4)
+  imgUrl      String     @default("https://via.placeholder.com/150")
+  difficulty  Difficulty @default(EASY)
+  portions    Int        @default(4)
+  time        Int        @default(0)
+  authorId    String
+  author       User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model News {
@@ -35,12 +36,12 @@ model News {
 }
 
 model Options {
-  id        String   @id @default(cuid())
-  title     String
-  meta      String
-  showNews  Boolean  @default(false)
+  id                String  @id @default(cuid())
+  title             String
+  meta              String
+  showNews          Boolean @default(false)
   underConstruction Boolean @default(false)
-  name      String
+  name              String
 }
 
 model Account {
@@ -78,6 +79,7 @@ model User {
   role          Role      @default(USER)
   accounts      Account[]
   sessions      Session[]
+  recepty      Recepty[]
 }
 
 model VerificationToken {
@@ -98,6 +100,7 @@ enum Role {
   USER
   ADMIN
 }
+
 enum Difficulty {
   EASY
   MEDIUM

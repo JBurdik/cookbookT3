@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
+import {
+  adminProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "../trpc";
 
 export const recipesRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -24,7 +29,7 @@ export const recipesRouter = createTRPCRouter({
     if (recept === null) {
       throw new Error("Recept neexistuje");
     }
-    return { recept };
+    return recept;
   }),
   uploadPhoto: publicProcedure
     .input(
@@ -44,7 +49,7 @@ export const recipesRouter = createTRPCRouter({
       });
       return { photo };
     }),
-  newRecipe: publicProcedure
+  newRecipe: protectedProcedure
     .input(
       z.object({
         title: z.string(),
@@ -58,21 +63,32 @@ export const recipesRouter = createTRPCRouter({
           title: input.title,
           content: input.content,
           ingredients: input.ingredients,
+          authorId: ctx.session.user.id,
           imgUrl: "https://via.placeholder.com/300.webp",
         },
       });
       return { newRecipe };
     }),
-  update: adminProcedure
+  update: protectedProcedure
     .input(
       z.object({
         id: z.string(),
         title: z.string(),
         content: z.string(),
         ingredients: z.string(),
+        authorId: z.string(),
+        time: z.number(),
+        difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXTRAHARD"]),
+        portions: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      if (
+        ctx.session.user.role != "ADMIN" &&
+        ctx.session.user.id !== input.authorId
+      ) {
+        throw new Error("Nemáte oprávnění k úpravě receptu");
+      }
       const editedRecipe = await ctx.prisma.recepty.update({
         where: {
           id: input.id,
@@ -81,6 +97,9 @@ export const recipesRouter = createTRPCRouter({
           title: input.title,
           content: input.content,
           ingredients: input.ingredients,
+          time: input.time,
+          difficulty: input.difficulty,
+          portions: input.portions,
         },
       });
       return { editedRecipe };

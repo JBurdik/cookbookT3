@@ -12,10 +12,11 @@ export interface EditFormData {
   title: string;
   content: string;
   ingredients: string;
-  time: number;
+  imgUrl: string;
   difficulty: Difficulty;
   portions: number;
-  imgUrl: string;
+  time: number;
+  authorId: string;
 }
 
 function RecipeEdit(props: {
@@ -27,7 +28,7 @@ function RecipeEdit(props: {
   const [content, setContent] = useState<string>("");
   const [file, setFile] = useState<File>();
   const [recipe, setRecipe] = useState<EditFormData>();
-  const recept = api.recipes.getOne.useQuery(recipeId).data?.recept;
+  const recept = api.recipes.getOne.useQuery(recipeId).data;
 
   const editRecipe = api.recipes.update.useMutation({
     onSuccess(data) {
@@ -95,20 +96,25 @@ function RecipeEdit(props: {
       console.log("uploading file");
       uplodadImage(file).catch((err) => console.log(err));
     }
-    if (!recipe || !recipeId) return;
+    if (!recipe || !recipeId || !recept) return;
+
     editRecipe.mutate({
       id: recipeId,
       title: recipe.title,
       ingredients: recipe.ingredients,
       content: content,
+      difficulty: recipe.difficulty,
+      portions: recipe.portions,
+      time: recipe.time,
+      authorId: recept.authorId,
     });
   }
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center bg-black/80 py-4 `}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 py-4 `}
     >
       <div
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-50"
         onClick={() => setEditId("")}
       ></div>
       <div
@@ -117,11 +123,12 @@ function RecipeEdit(props: {
       >
         <FaTimes size={20} />
       </div>
-      <div className="relative z-30 flex max-h-[90%] w-full gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl md:max-w-3xl">
+      <div className="relative z-50 flex max-h-[90%] w-full gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl md:max-w-3xl">
         <div className="flex h-full w-full flex-col">
           <h1 className="my-4 text-center text-lg font-thin uppercase tracking-widest text-white">
             Editace Receptu
           </h1>
+          autor receptu: {recept.authorId}
           <form
             onSubmit={(e) => handleForm(e)}
             className="flex h-auto flex-col gap-2"
@@ -155,7 +162,18 @@ function RecipeEdit(props: {
             <label className="form-label" htmlFor="difficulty">
               Obtížnost
             </label>
-            <select className="form-input" name="">
+            <select
+              className="form-input"
+              onChange={(e) =>
+                recipe &&
+                setRecipe({
+                  ...recipe,
+                  difficulty: e.target.value as Difficulty,
+                })
+              }
+              defaultValue={Difficulty.EASY}
+              name=""
+            >
               <option value={Difficulty.EASY}>Jednoduché</option>
               <option value={Difficulty.MEDIUM}>Střední</option>
               <option value={Difficulty.HARD}>Těžké</option>
@@ -168,16 +186,36 @@ function RecipeEdit(props: {
                 </label>
                 <input
                   className="form-input"
-                  type="text"
+                  type="number"
                   name="time"
                   id="time"
+                  value={recipe?.time}
+                  onChange={(e) =>
+                    recipe &&
+                    setRecipe({
+                      ...recipe,
+                      time: e.target.valueAsNumber,
+                    })
+                  }
                 />
               </span>
               <span className="flex w-full flex-col items-start gap-1">
                 <label className="form-label" htmlFor="portions">
                   Počet porcí
                 </label>
-                <input className="form-input" type="text" name="portions" />
+                <input
+                  className="form-input"
+                  type="number"
+                  value={recipe?.portions}
+                  onChange={(e) =>
+                    recipe &&
+                    setRecipe({
+                      ...recipe,
+                      portions: e.target.valueAsNumber,
+                    })
+                  }
+                  name="portions"
+                />
               </span>
             </div>
             <label className="form-label" htmlFor="content">
