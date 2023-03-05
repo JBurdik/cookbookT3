@@ -55,6 +55,9 @@ export const recipesRouter = createTRPCRouter({
         title: z.string(),
         content: z.string(),
         ingredients: z.string(),
+        time: z.number(),
+        difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXTRAHARD"]),
+        portions: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -63,6 +66,9 @@ export const recipesRouter = createTRPCRouter({
           title: input.title,
           content: input.content,
           ingredients: input.ingredients,
+          time: input.time,
+          difficulty: input.difficulty,
+          portions: input.portions,
           authorId: ctx.session.user.id,
           imgUrl: "https://via.placeholder.com/300.webp",
         },

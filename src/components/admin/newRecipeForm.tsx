@@ -1,4 +1,4 @@
-import { type Recepty } from "@prisma/client";
+import { Difficulty, type Recepty } from "@prisma/client";
 import type { FormEvent } from "react";
 import { useRef, useState } from "react";
 
@@ -12,6 +12,9 @@ export interface FormData {
   title: string;
   content: string;
   ingredients: string;
+  portions: number;
+  time: number;
+  difficulty: Difficulty;
 }
 
 const RecipeForm = (props: {
@@ -27,6 +30,9 @@ const RecipeForm = (props: {
     title: "",
     content: "",
     ingredients: "",
+    portions: 0,
+    time: 0,
+    difficulty: "EASY",
   });
   const newRecipe = api.recipes.newRecipe.useMutation({
     onSuccess: async (data) => {
@@ -52,7 +58,14 @@ const RecipeForm = (props: {
       return;
     }
     newRecipe.mutate(data);
-    setForm({ title: "", content: "", ingredients: "" });
+    setForm({
+      title: "",
+      content: "",
+      ingredients: "",
+      portions: 0,
+      time: 0,
+      difficulty: "EASY",
+    });
   }
   // file upload
   const openSelectFile = () => {
@@ -133,6 +146,65 @@ const RecipeForm = (props: {
               type="text"
               name="ingredients"
             />
+            <label className="form-label" htmlFor="difficulty">
+              Obtížnost
+            </label>
+            <select
+              className="form-input"
+              onChange={(e) =>
+                form &&
+                setForm({
+                  ...form,
+                  difficulty: e.target.value as Difficulty,
+                })
+              }
+              defaultValue={Difficulty.EASY}
+              name=""
+            >
+              <option value={Difficulty.EASY}>Jednoduché</option>
+              <option value={Difficulty.MEDIUM}>Střední</option>
+              <option value={Difficulty.HARD}>Těžké</option>
+              <option value={Difficulty.EXTRAHARD}>Extra Těžké</option>
+            </select>
+            <div className="form-group">
+              <span className="flex w-full flex-col items-start gap-1">
+                <label className="form-label" htmlFor="time">
+                  Doba přípravy
+                </label>
+                <input
+                  className="form-input"
+                  type="number"
+                  name="time"
+                  id="time"
+                  value={form?.time}
+                  onChange={(e) =>
+                    form &&
+                    setForm({
+                      ...form,
+                      time: e.target.valueAsNumber,
+                    })
+                  }
+                />
+              </span>
+              <span className="flex w-full flex-col items-start gap-1">
+                <label className="form-label" htmlFor="portions">
+                  Počet porcí
+                </label>
+                <input
+                  className="form-input"
+                  type="number"
+                  value={form?.portions}
+                  onChange={(e) =>
+                    form &&
+                    setForm({
+                      ...form,
+                      portions: e.target.valueAsNumber,
+                    })
+                  }
+                  name="portions"
+                />
+              </span>
+            </div>
             <label className="form-label">Popis Receptu:</label>
             <RecipeRichEditor content={content} setContent={setContent} />
             <input
