@@ -15,6 +15,7 @@ export interface FormData {
   portions: number;
   time: number;
   difficulty: Difficulty;
+  tags: string;
 }
 
 const RecipeForm = (props: {
@@ -33,6 +34,7 @@ const RecipeForm = (props: {
     portions: 0,
     time: 0,
     difficulty: "EASY",
+    tags: "",
   });
   const newRecipe = api.recipes.newRecipe.useMutation({
     onSuccess: async (data) => {
@@ -65,6 +67,7 @@ const RecipeForm = (props: {
       portions: 0,
       time: 0,
       difficulty: "EASY",
+      tags: "",
     });
   }
   // file upload
@@ -97,6 +100,8 @@ const RecipeForm = (props: {
 
   const handleSubmit = (e: FormEvent, data: FormData) => {
     e.preventDefault();
+    const tags = data.tags.split(",");
+
     createRecipe(data);
   };
   if (!isOpen) return <></>;
