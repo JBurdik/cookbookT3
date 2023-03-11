@@ -7,10 +7,21 @@ import {
 } from "../trpc";
 
 export const recipesRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    const recepty = await ctx.prisma.recepty.findMany();
-    return recepty;
-  }),
+  getAll: publicProcedure
+    .input(z.string().optional())
+    .query(async ({ ctx, input }) => {
+      if (!input) return ctx.prisma.recepty.findMany();
+      const recepty = await ctx.prisma.recepty.findMany({
+        where: {
+          tags: {
+            some: {
+              name: input,
+            },
+          },
+        },
+      });
+      return recepty;
+    }),
   getAllTitles: publicProcedure.query(async ({ ctx }) => {
     const recepty = await ctx.prisma.recepty.findMany({
       select: {
@@ -24,6 +35,9 @@ export const recipesRouter = createTRPCRouter({
     const recept = await ctx.prisma.recepty.findUnique({
       where: {
         id: input,
+      },
+      include: {
+        tags: true,
       },
     });
     if (recept === null) {
@@ -60,7 +74,6 @@ export const recipesRouter = createTRPCRouter({
         portions: z.number(),
         tags: z.array(
           z.object({
-            id: z.string(),
             name: z.string(),
           })
         ),
@@ -76,7 +89,7 @@ export const recipesRouter = createTRPCRouter({
           difficulty: input.difficulty,
           portions: input.portions,
           authorId: ctx.session.user.id,
-          tags: { create: input.tags },
+          tags: { connect: input.tags },
           imgUrl: "https://via.placeholder.com/300.webp",
         },
       });
@@ -93,6 +106,11 @@ export const recipesRouter = createTRPCRouter({
         time: z.number(),
         difficulty: z.enum(["EASY", "MEDIUM", "HARD", "EXTRAHARD"]),
         portions: z.number(),
+        tags: z.array(
+          z.object({
+            name: z.string(),
+          })
+        ),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -113,6 +131,7 @@ export const recipesRouter = createTRPCRouter({
           time: input.time,
           difficulty: input.difficulty,
           portions: input.portions,
+          tags: { connect: input.tags },
         },
       });
       return { editedRecipe };

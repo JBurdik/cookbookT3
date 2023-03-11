@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import type { Tags } from "@prisma/client";
 import { Difficulty } from "@prisma/client";
 import { useS3Upload } from "next-s3-upload";
 import React, { useRef, useState } from "react";
@@ -6,6 +7,7 @@ import { FaTimes } from "react-icons/fa";
 import { FiImage } from "react-icons/fi";
 import { api } from "../../utils/api";
 import RecipeRichEditor from "../RecipeRichEditor";
+import TagSelect from "./TagSelect";
 
 export interface EditFormData {
   id: string;
@@ -17,6 +19,7 @@ export interface EditFormData {
   portions: number;
   time: number;
   authorId: string;
+  tags: Tags[];
 }
 
 function RecipeEdit(props: {
@@ -29,11 +32,12 @@ function RecipeEdit(props: {
   const [file, setFile] = useState<File>();
   const [recipe, setRecipe] = useState<EditFormData>();
   const recept = api.recipes.getOne.useQuery(recipeId).data;
+  const [tags, setTags] = useState<Tags[]>();
 
   const editRecipe = api.recipes.update.useMutation({
     onSuccess(data) {
       alert(`Editace receptu: ${data.editedRecipe.title} byla úspěšná!`);
-      setRecipe(data.editedRecipe);
+      // setRecipe(data.editedRecipe);
       setEditId("");
     },
     onError(error) {
@@ -65,6 +69,7 @@ function RecipeEdit(props: {
   if (recept && !recipe) {
     setRecipe(recept);
     setContent(recept.content);
+    setTags(recept.tags);
   }
   // const handleFileChange = (file: File) => {
   //   setFile(file);
@@ -107,6 +112,7 @@ function RecipeEdit(props: {
       portions: recipe.portions,
       time: recipe.time,
       authorId: recept.authorId,
+      tags: tags as Tags[],
     });
   }
   return (
@@ -128,7 +134,6 @@ function RecipeEdit(props: {
           <h1 className="my-4 text-center text-lg font-thin uppercase tracking-widest text-white">
             Editace Receptu
           </h1>
-          autor receptu: {recept.authorId}
           <form
             onSubmit={(e) => handleForm(e)}
             className="flex h-auto flex-col gap-2"
@@ -179,6 +184,7 @@ function RecipeEdit(props: {
               <option value={Difficulty.HARD}>Těžké</option>
               <option value={Difficulty.EXTRAHARD}>Extra Těžké</option>
             </select>
+            {tags && <TagSelect tags={tags} setTags={setTags} />}
             <div className="form-group">
               <span className="flex w-full flex-col items-start gap-1">
                 <label className="form-label" htmlFor="time">
@@ -253,3 +259,69 @@ function RecipeEdit(props: {
 }
 
 export default RecipeEdit;
+
+// const TagSelect = ({
+//   tags,
+//   setTags,
+// }: {
+//   tags: Tags[];
+//   setTags: (tags: Tags[]) => void;
+// }) => {
+//   const tagQuery = api.tags.getAll.useQuery();
+
+//   const fileredTags = tagQuery.data?.filter((tag) => {
+//     return !tags.find((t) => t.name === tag.name);
+//   });
+
+//   const isActive = (name: string) => {
+//     return tags.find((tag) => tag.name === name);
+//   };
+
+//   const handleSelectTag = (name: string) => {
+//     if (isActive(name)) {
+//       const newTags = tags.filter((tag) => tag.name !== name);
+//       setTags(newTags);
+//     } else {
+//       setTags([...tags, { name: name }]);
+//     }
+//   };
+
+//   // const handleAddTag = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//   //   if (e.target.value === "Vyber tag") return;
+//   //   setTags([...tags, { name: e.target.value }]);
+//   // };
+
+//   return (
+//     <div className="flex flex-col gap-2">
+//       Tags:
+//       {/* {fileredTags && fileredTags.length > 0 && (
+//         <select onChange={handleAddTag} className="text-black">
+//           <option selected>Vyber tag</option>
+//           {fileredTags.map((tag, i) => (
+//             <option
+//               key={i}
+//               value={tag.name}
+//               className="flex items-center justify-center gap-2"
+//             >
+//               {tag.name}
+//             </option>
+//           ))}
+//         </select>
+//       )} */}
+//       <div className="flex flex-wrap gap-2">
+//         {tagQuery.data?.map((tag) => (
+//           <div
+//             key={tag.name}
+//             className={`
+//             ${isActive(tag.name) ? "bg-purple-500" : ""}
+//             cursor-pointer rounded-md border-2 border-purple-500 p-2
+//             `}
+//             onClick={() => handleSelectTag(tag.name)}
+//           >
+//             {tag.name}
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
