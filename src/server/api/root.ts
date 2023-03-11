@@ -3,6 +3,7 @@ import { newsRouter } from "./routers/news";
 import { optionsRouter } from "./routers/options";
 import { recipesRouter } from "./routers/recepty";
 import { s3Router } from "./routers/s3";
+import { tagsRouter } from "./routers/tags";
 import { usersRouter } from "./routers/users";
 import { createTRPCRouter } from "./trpc";
 
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   options: optionsRouter,
   users: usersRouter,
   s3: s3Router,
+  tags: tagsRouter,
 });
 
 // export type definition of API

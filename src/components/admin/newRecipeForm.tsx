@@ -1,3 +1,4 @@
+import type { Tags } from "@prisma/client";
 import { Difficulty, type Recepty } from "@prisma/client";
 import type { FormEvent } from "react";
 import { useRef, useState } from "react";
@@ -7,6 +8,7 @@ import { FaTimes } from "react-icons/fa";
 import { FiImage } from "react-icons/fi";
 import { api } from "../../utils/api";
 import RecipeRichEditor from "../RecipeRichEditor";
+import TagSelect from "./TagSelect";
 
 export interface FormData {
   title: string;
@@ -15,6 +17,7 @@ export interface FormData {
   portions: number;
   time: number;
   difficulty: Difficulty;
+  tags: Tags[];
 }
 
 const RecipeForm = (props: {
@@ -23,9 +26,11 @@ const RecipeForm = (props: {
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const refFileInput = useRef<HTMLInputElement>(null);
+  const tagsQuery = api.tags.getAll.useQuery();
   const { isOpen, setIsOpen } = props;
   const [file, setFile] = useState<File>();
   const [content, setContent] = useState<string>("");
+  const [tags, setTags] = useState<Tags[]>();
   const [form, setForm] = useState<FormData>({
     title: "",
     content: "",
@@ -33,6 +38,7 @@ const RecipeForm = (props: {
     portions: 0,
     time: 0,
     difficulty: "EASY",
+    tags: [{ name: "" }],
   });
   const newRecipe = api.recipes.newRecipe.useMutation({
     onSuccess: async (data) => {
@@ -52,11 +58,15 @@ const RecipeForm = (props: {
       console.error(error);
     },
   });
+  // if (tagsQuery.isFetched && !tags) {
+  //   setTags(tagsQuery.data);
+  // }
   function createRecipe(data: FormData) {
     if (content === "") {
       alert("Recept musí mít obsah");
       return;
     }
+    data.tags = tags as Tags[];
     newRecipe.mutate(data);
     setForm({
       title: "",
@@ -65,6 +75,7 @@ const RecipeForm = (props: {
       portions: 0,
       time: 0,
       difficulty: "EASY",
+      tags: [{ name: "" }],
     });
   }
   // file upload
@@ -97,6 +108,7 @@ const RecipeForm = (props: {
 
   const handleSubmit = (e: FormEvent, data: FormData) => {
     e.preventDefault();
+
     createRecipe(data);
   };
   if (!isOpen) return <></>;
@@ -119,7 +131,6 @@ const RecipeForm = (props: {
           <h1 className="my-4 text-center text-lg font-thin uppercase tracking-widest text-white">
             Vytvořit Recept
           </h1>
-          {content}
           <form
             onSubmit={(e) => handleSubmit(e, { ...form, content })}
             className="flex h-auto flex-col gap-2"
@@ -146,6 +157,19 @@ const RecipeForm = (props: {
               type="text"
               name="ingredients"
             />
+            <label className="form-label">Tags:</label>
+            <TagSelect tags={tags as Tags[]} setTags={setTags} />
+            {/* <input
+              type="text"
+              className="form-input"
+              value={form.tags[0]?.name}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  tags: [...form.tags, { name: e.target.value }],
+                })
+              }
+            /> */}
             <label className="form-label" htmlFor="difficulty">
               Obtížnost
             </label>

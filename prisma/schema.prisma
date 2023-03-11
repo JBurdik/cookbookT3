@@ -25,6 +25,12 @@ model Recepty {
   time        Int        @default(0)
   authorId    String
   author       User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags        Tags[]
+}
+
+model Tags {
+  name      String  @unique @id
+  recepty   Recepty[] 
 }
 
 model News {

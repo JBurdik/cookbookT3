@@ -11,7 +11,7 @@ export default function AdminWrapper({
 
   if (status === "loading")
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-purple-700 to-black">
+      <div className="flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-gray-700 to-black">
         <BounceLoader color="#786298" />
         <p className="text-xs font-extralight uppercase tracking-widest">
           Načítám session...
@@ -35,7 +35,7 @@ export default function AdminWrapper({
   //   );
   // }
   return (
-    <div className="flex h-screen w-screen flex-col items-center overflow-y-auto bg-gradient-to-b from-purple-700 to-black pt-16">
+    <div className="flex h-screen w-screen flex-col items-center overflow-y-auto bg-gray-900 pt-16">
       <Nav />
       {children}
     </div>
