@@ -1,9 +1,7 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import type { Tags } from "@prisma/client";
 import { type Recepty } from "@prisma/client";
-import Link from "next/link";
 import Layout from "../components/Layout";
 import { api } from "../utils/api";
 
@@ -105,30 +103,6 @@ function Home() {
                 <></>
               )}
             </div>
-            {/* <div className="flex flex-col items-center justify-center gap-4">
-            <h2 className="text-3xl">Recepty podle tagů: </h2>
-            <div className="flex flex-row flex-wrap gap-2">
-              {tagsQuery.data?.map((t) => (
-                <div
-                  className={`${
-                    tag === t ? "bg-purple-500" : "bg-transparent"
-                  } rounded-full border border-purple-500  px-3 transition-all duration-200 ease-in-out`}
-                  onClick={() => setTag(t)}
-                  key={t.name}
-                >
-                  {t.name}
-                </div>
-              ))}
-            </div>
-            {recipesByTagQuery.data &&
-              recipesByTagQuery.data.map((recipe) => (
-                <RecipeCard recipe={recipe} key={recipe.id} />
-              ))}
-          </div> */}
-            <div className="flex flex-col items-center justify-center gap-4"></div>
-            <div className="flex flex-col items-center gap-2">
-              <AuthShowcase />
-            </div>
           </div>
         </main>
       </Layout>
@@ -137,32 +111,3 @@ function Home() {
 }
 
 export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  const role = api.example.getUserRole.useQuery(undefined, {
-    enabled: sessionData?.user !== undefined,
-  }).data?.role;
-
-  return (
-    <div className="fixed bottom-0 flex w-full flex-row items-center justify-between gap-4 bg-black/70 px-6 py-2">
-      <p className="flex flex-row items-center justify-center gap-2 text-center text-white">
-        {sessionData && (
-          <span className="text-lg">{sessionData.user?.name}</span>
-        )}
-        <Link href="/admin">
-          <span className="text-center text-xs text-red-500">
-            {role && <span> - {role}</span>}
-          </span>
-        </Link>
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};
