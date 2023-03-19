@@ -1,0 +1,8 @@
+/* styles */
+
+.btn {
+  @apply relative m-0 flex flex-col items-center justify-center gap-2;
+}
+.btn span {
+  @apply text-[0.5em] font-thin uppercase text-white;
+}

@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiHome } from "react-icons/fi";
-import Nav from "./Nav";
+import NavBar from "./NavBar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = router.pathname;
   return (
     <>
-      <Nav />
+      <NavBar />
       {pathname !== "/" && (
         <Link
           href="/"

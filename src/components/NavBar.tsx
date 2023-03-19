@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client";
-import { motion as m } from "framer-motion";
+import { AnimatePresence, motion as m } from "framer-motion";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,8 +14,9 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { FiCommand } from "react-icons/fi";
+import css from "./NavBar.module.css";
 
-const Nav = () => {
+const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: sessionData } = useSession();
@@ -26,22 +27,48 @@ const Nav = () => {
   };
   return (
     <>
-      <div className="fixed bottom-0 right-0 z-50 flex w-20 items-center justify-center rounded-lg border border-purple-200 bg-purple-500/20 px-4 py-4 backdrop-blur-lg">
-        <m.button
-          onClick={() => setIsOpen(!isOpen)}
-          className=""
-          animate={isOpen ? { rotate: 90 } : { rotate: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          {isOpen ? (
-            <m.div>
-              <FaTimes size={20} />
+      <div className="fixed bottom-0 left-0 z-50 flex w-full flex-row items-center justify-between rounded-lg border border-purple-200 bg-purple-500/20 px-4 py-2 backdrop-blur-md">
+        <button className={css.btn}>
+          <FaBook size={20} />
+          <span>Recepty</span>
+        </button>
+        <m.button className={css.btn} onClick={() => setIsOpen(!isOpen)}>
+          <AnimatePresence>
+            <m.div
+              key={isOpen ? "open" : "closed"}
+              className=" flex items-center justify-center"
+              // animate={isOpen ? { rotate: 90 } : { rotate: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <m.div
+                key={isOpen ? "open" : "closed"}
+                className="relative"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+              </m.div>
+              {/* {isOpen ? (
+                <m.div
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                >
+                  <FaTimes size={20} />
+                </m.div>
+              ) : (
+                <m.div
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                >
+                  <FaBars size={20} />
+                </m.div> 
+              )}*/}
             </m.div>
-          ) : (
-            <m.div>
-              <FaBars size={20} />
-            </m.div>
-          )}
+          </AnimatePresence>
+          <span>{isOpen ? "Close" : "More"}</span>
         </m.button>
       </div>
       <m.div
@@ -88,7 +115,7 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default NavBar;
 
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
