@@ -1,6 +1,6 @@
 import { Role } from "@prisma/client";
 import { motion as m } from "framer-motion";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -86,6 +86,7 @@ const NavBar = () => {
 
           {/* text of icon */}
           <m.span
+            initial={{ display: "none" }}
             transition={{
               delay: isOpen ? 0.3 : 0,
               duration: 0.3,
@@ -231,7 +232,7 @@ const AuthShowcase: React.FC = () => {
         }}
         whileHover={{ scale: 1.5 }}
         className="hover:text-purple-400"
-        // onClick={() => void signOut()}
+        onClick={() => void signOut()}
       >
         <FaSignOutAlt size={20} />
       </m.button>
