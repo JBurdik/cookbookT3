@@ -1,22 +1,17 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { FiHome } from "react-icons/fi";
+import { BounceLoader } from "react-spinners";
 import NavBar from "./NavBar";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const pathname = router.pathname;
+const Layout = ({
+  children,
+  isLoading,
+}: {
+  children: React.ReactNode;
+  isLoading?: boolean;
+}) => {
   return (
     <>
       <NavBar />
-      {pathname !== "/" && (
-        <Link
-          href="/"
-          className="fixed bottom-4 right-4 rounded-full bg-white/30 p-4 text-white/70"
-        >
-          <FiHome size={"2rem"} />
-        </Link>
-      )}
+
       {/* {pathname.startsWith("/recipe") ? (
         <main className="flex min-h-screen w-screen flex-col items-center bg-gray-900">
           <div className="flex h-full w-full flex-col items-center gap-12 ">
@@ -32,7 +27,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       )} */}
       <main className="flex min-h-screen w-full flex-col items-center justify-center bg-gray-900">
         <div className="container flex w-full flex-col items-center justify-center gap-12 px-4 py-16 ">
-          {children}
+          {/* if is loading show this spiner */}
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center gap-5">
+              <BounceLoader color="#786298" />
+              <p className="text-xs font-extralight uppercase tracking-widest">
+                {children}
+              </p>
+            </div>
+          ) : (
+            children
+          )}
         </div>
       </main>
     </>

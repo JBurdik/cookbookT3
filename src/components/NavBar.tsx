@@ -9,7 +9,7 @@ import { FiBook, FiCommand, FiHeart, FiInfo, FiSettings } from "react-icons/fi";
 import css from "./NavBar.module.css";
 
 const NavBar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { data: sessionData } = useSession();
   // framer motion variants for animation open and close menu
@@ -200,7 +200,7 @@ const AuthShowcase: React.FC = () => {
       <div className="mt-auto">
         <p className="flex flex-row items-center justify-center gap-2 text-center text-white">
           {sessionData && sessionData.user && sessionData.user.image && (
-            <Link href="/">
+            <Link href="/profile">
               <Image
                 src={sessionData.user.image}
                 alt={sessionData.user.name || "User image"}
