@@ -25,12 +25,12 @@ const Layout = ({
           </div>
         </main>
       )} */}
-      <main className="flex min-h-screen w-full flex-col items-center justify-center bg-gray-900">
+      <main className="flex min-h-screen w-full flex-col items-center justify-center bg-primary-900">
         <div className="container flex w-full flex-col items-center justify-center gap-12 px-4 py-16 ">
           {/* if is loading show this spiner */}
           {isLoading ? (
             <div className="flex flex-col items-center justify-center gap-5">
-              <BounceLoader color="#786298" />
+              <BounceLoader color="#faba8d" />
               <p className="text-xs font-extralight uppercase tracking-widest">
                 {children}
               </p>

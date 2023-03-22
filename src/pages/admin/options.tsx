@@ -41,7 +41,7 @@ const Options = () => {
 
   return (
     <AdminWrapper>
-      <h1 className="my-5 text-4xl font-bold uppercase tracking-widest text-purple-300">
+      <h1 className="my-5 text-4xl font-bold uppercase tracking-widest text-primary-100">
         Options
       </h1>
       <form className="opt-form" onSubmit={(e) => handleSubmit(e)}>
@@ -86,7 +86,7 @@ const Options = () => {
           />
         </div>
         <button
-          className="rounded-lg bg-purple-400 px-4 py-2 font-semibold uppercase tracking-widest"
+          className="rounded-lg bg-primaryS-600 px-4 py-2 font-semibold uppercase tracking-widest"
           type="submit"
         >
           Uložit

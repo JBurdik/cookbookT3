@@ -40,7 +40,7 @@ function SingleUser({ user }: { user: User }) {
     //     </select>
     //   </td>
     // </tr>
-    <div className="flex flex-col items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-2 text-white">
+    <div className="flex flex-col items-center justify-center gap-2 rounded-xl bg-primaryL-700/40 px-4 py-2 text-white">
       {user.image ? (
         <Image
           src={user.image}

@@ -41,7 +41,7 @@ const Users = () => {
   if (usersQuery.isSuccess && gridCols == "") getGridCols(filteredUsers.length);
   return (
     <AdminWrapper>
-      <h2 className="my-3 text-3xl font-bold uppercase tracking-wide text-violet-400 lg:text-5xl">
+      <h2 className="my-3 text-3xl font-bold uppercase tracking-wide text-primary-100 lg:text-5xl">
         Uživatelé
       </h2>
       {/* <table className="table-auto border-collapse border-spacing-4 p-4">
@@ -61,9 +61,7 @@ const Users = () => {
             ))}
         </tbody>
       </table> */}
-      <div
-        className={`grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-${gridCols}`}
-      >
+      <div className={`grid grid-cols-2 gap-2 md:grid-cols-3`}>
         {filteredUsers &&
           filteredUsers.map((user) => <SingleUser key={user.id} user={user} />)}
       </div>

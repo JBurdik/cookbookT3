@@ -52,19 +52,23 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
       <Layout>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gray-900">
-          <div className="container flex flex-col items-center justify-center gap-12 px-6 py-16 ">
-            <h1 className="sm:text-[5rem]">
-              {options?.name}{" "}
-              <span className="text-[hsl(280,100%,70%)]">Kuchařka</span>
-            </h1>
-            <h2 className="text-3xl">Recepty: </h2>
+        <main className="flex min-h-screen flex-col items-center justify-center">
+          <div className="container flex flex-col items-center justify-center gap-12 px-6 pt-2 pb-16 ">
+            <div className="flex flex-col">
+              <h1 className="font-thin tracking-tighter text-primaryL-900 sm:text-6xl">
+                {options?.name}
+              </h1>
+              <p className="relative -top-2 self-end text-primaryL-500/40">
+                by Jirka Burdych
+              </p>
+            </div>
+            {/* <h2 className="text-3xl">Recepty: </h2> */}
             <div className="flex flex-col">
               <span className="mb-3 flex flex-row items-center justify-between gap-2">
                 <h3>Filtr:</h3>
                 {tag && (
                   <div
-                    className={`flex cursor-pointer items-center gap-2 rounded-xl border border-purple-100/40 p-2 text-xs font-thin text-purple-100/70 transition-all duration-200 ease-in-out`}
+                    className={`border-secondary/40 flex cursor-pointer items-center gap-2 rounded-xl border p-2 text-xs font-thin text-purple-100/70 transition-all duration-200 ease-in-out`}
                     onClick={() => setTag(undefined)}
                   >
                     Vymazat filtr
@@ -76,8 +80,8 @@ function Home() {
                 {tagsQuery.data?.map((t) => (
                   <div
                     className={`${
-                      tag === t ? "bg-purple-500" : "bg-transparent"
-                    } cursor-pointer rounded-full border border-purple-500 px-3 transition-all duration-200 ease-in-out`}
+                      tag === t ? "bg-primary-300" : "bg-transparent"
+                    } cursor-pointer rounded-full border border-primary-300 px-3 transition-all duration-200 ease-in-out`}
                     onClick={() => setTag(t)}
                     key={t.name}
                   >
@@ -88,7 +92,7 @@ function Home() {
             </div>
             {getRecipes.isLoading && (
               <div className="flex flex-col items-center justify-center gap-5">
-                <BounceLoader color="#786298" />
+                <BounceLoader color="#faba8d" />
                 <p className="text-xs font-extralight uppercase tracking-widest">
                   Načítám recepty...
                 </p>

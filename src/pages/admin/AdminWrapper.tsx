@@ -22,12 +22,12 @@ export default function AdminWrapper({
 
   if (!session || session.user?.role !== "ADMIN") {
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-purple-700 to-black">
+      <div className="flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-primary-300 to-black">
         <h1 className="text-4xl font-bold">
           Nejsi Oprávněn navštívit tuto stránku
         </h1>
         <Link
-          className="my-5 rounded-lg bg-yellow-400 py-2 px-4 font-light uppercase tracking-widest text-white shadow-lg shadow-black transition-all hover:bg-yellow-500"
+          className="my-5 rounded-lg bg-primaryS-500 py-2 px-4 font-light uppercase tracking-widest text-white shadow-lg shadow-black transition-all hover:bg-yellow-500"
           href={"/"}
         >
           Zpět Domů

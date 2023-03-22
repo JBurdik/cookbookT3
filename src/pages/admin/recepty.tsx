@@ -48,11 +48,11 @@ const Recipes = () => {
   return (
     <AdminWrapper>
       <RecipeForm isOpen={isOpen} setIsOpen={setIsOpen} onSubmit={getData} />
-      <h2 className="my-3 text-3xl font-bold uppercase tracking-wide text-violet-400 lg:text-5xl">
+      <h2 className="my-3 text-3xl font-bold uppercase tracking-wide text-primary-100 lg:text-5xl">
         Seznam receptů
       </h2>
       <button
-        className="my-4 flex flex-row items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-2 text-white"
+        className="my-4 flex flex-row items-center justify-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-white"
         onClick={() => setIsOpen(!isOpen)}
       >
         <FaPlus />

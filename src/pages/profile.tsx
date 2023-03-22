@@ -35,12 +35,12 @@ function Profile() {
             alt={session.user.name || "User image"}
             width={100}
             height={100}
-            className="rounded-full border-4 border-purple-400"
+            className="rounded-full border-4 border-primary-100"
           />
           <h2>{session.user.name}</h2>
           <div className="flex items-end gap-2">
             <p className="text-xs font-extralight">Role:</p>
-            <p className="text-sm font-bold tracking-wide text-purple-400">
+            <p className="text-sm font-bold tracking-wide text-primaryS-500">
               {session.user.role}
             </p>
           </div>

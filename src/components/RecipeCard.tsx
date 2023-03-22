@@ -28,7 +28,9 @@ const RecipeCard = ({ recipe }: { recipe: Recepty }) => {
           />
         </div>
         <div className="absolute bottom-0 grid w-full grid-cols-2 items-center bg-gradient-to-t from-black to-transparent px-3 pt-24">
-          <h1 className="text-xl md:text-4xl lg:text-5xl">{recipe.title}</h1>
+          <h1 className="text-xl text-primaryL-900 md:text-4xl lg:text-5xl">
+            {recipe.title}
+          </h1>
           <div className="row-span-2 my-4 grid grid-cols-3 place-items-start justify-items-center rounded-md">
             <span className="flex flex-col items-center justify-center gap-1 text-sm font-thin">
               <FaClock size={20} />
@@ -43,7 +45,7 @@ const RecipeCard = ({ recipe }: { recipe: Recepty }) => {
               {recipe.portions}
             </span>
           </div>
-          <p className="translate-y-4 text-xs font-thin uppercase tracking-wider opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:text-purple-400 group-hover:opacity-100">
+          <p className="translate-y-4 text-xs font-thin uppercase tracking-wider opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:text-primary-300 group-hover:opacity-100">
             Zobrazit recept
           </p>
         </div>

@@ -45,7 +45,7 @@ const NavBar = () => {
   };
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-50 flex h-16 w-full flex-row items-center justify-between rounded-lg border border-purple-200 bg-purple-500/20 px-4 py-2 backdrop-blur-md">
+      <div className="fixed bottom-0 left-0 z-50 flex h-16 w-full flex-row items-center justify-between rounded-lg border border-primaryL-200 bg-primary-300/20 px-4 py-2 backdrop-blur-md">
         <Link href="/" className={css.btn}>
           <FiBook size={20} />
           <span>Recepty</span>
@@ -121,19 +121,12 @@ const NavBar = () => {
       >
         {/* buttons */}
         <m.div
-          whileHover={{ scale: 1.2, color: "hsl(280,50%,80%)" }}
+          whileHover={{ scale: 1.2, color: "#faba8d" }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
           className="flex items-center justify-center gap-2 rounded-full bg-white/30 px-4 py-2 "
         >
           <FiInfo size={20} />O projektu
         </m.div>
-        {/* <m.div
-          whileHover={{ scale: 1.2, color: "hsl(280,50%,80%)" }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          className="flex items-center justify-center gap-2 rounded-full bg-white/30 px-4 py-2 "
-        >
-          <FiInfo size={20} /> O projektu
-        </m.div> */}
 
         {sessionData ? (
           <>
@@ -148,43 +141,6 @@ const NavBar = () => {
           </div>
         )}
       </m.div>
-      {/* <m.div
-        initial="closed"
-        animate={isOpen ? "open" : "closed"}
-        variants={variants}
-        transition={{ duration: 0.3 }}
-        className="fixed top-0 bottom-16 right-0 z-30 flex w-20 flex-col items-center gap-6 border-l border-gray-50/20 bg-gray-300/20 pt-12 pb-3 shadow-lg shadow-black backdrop-blur-md"
-      >
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/30">
-          <FiInfo size={20} />
-        </div>
-
-        {sessionData ? (
-          <>
-            <AuthShowcase />
-            <m.button
-              transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 10,
-                duration: 0.3,
-              }}
-              whileHover={{ scale: 1.5 }}
-              className="hover:text-purple-400"
-              onClick={() => void signOut()}
-            >
-              <FaSignOutAlt size={20} />
-            </m.button>
-          </>
-        ) : (
-          <div
-            onClick={() => void signIn()}
-            className="mt-auto flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-white/30"
-          >
-            <FaSignInAlt size={20} />
-          </div>
-        )}
-      </m.div> */}
     </>
   );
 };
@@ -207,7 +163,7 @@ const AuthShowcase: React.FC = () => {
                 alt={sessionData.user.name || "User image"}
                 width={55}
                 height={55}
-                className="rounded-full border-2 border-white transition-all hover:border-purple-300"
+                className="rounded-full border-2 border-white transition-all hover:border-primary-300"
               />
             </Link>
           )}
@@ -218,7 +174,7 @@ const AuthShowcase: React.FC = () => {
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
           whileHover={{ scale: 1.5 }}
         >
-          <Link href="/admin" className="transition hover:text-purple-300">
+          <Link href="/admin" className="transition hover:text-primaryS-500">
             <FiCommand size={20} />
           </Link>
         </m.span>
@@ -231,7 +187,7 @@ const AuthShowcase: React.FC = () => {
           duration: 0.3,
         }}
         whileHover={{ scale: 1.5 }}
-        className="hover:text-purple-400"
+        className="hover:text-primaryS-500"
         onClick={() => void signOut()}
       >
         <FaSignOutAlt size={20} />

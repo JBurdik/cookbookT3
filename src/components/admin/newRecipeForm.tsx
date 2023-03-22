@@ -126,7 +126,7 @@ const RecipeForm = (props: {
       >
         <FaTimes size={20} />
       </div>
-      <div className="relative z-30 flex max-h-[90%] w-full justify-center gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl md:max-w-3xl">
+      <div className="relative z-30 flex max-h-[90%] w-full justify-center gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-primary-700 to-primary-800 p-4 shadow-xl md:max-w-3xl">
         <div className="flex w-full flex-col  ">
           <h1 className="my-4 text-center text-lg font-thin uppercase tracking-widest text-white">
             Vytvořit Recept
@@ -240,13 +240,13 @@ const RecipeForm = (props: {
             <button
               type="button"
               onClick={openSelectFile}
-              className=" mx-auto mt-2 flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+              className=" mx-auto mt-2 flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-primary-200 p-2 shadow-md shadow-black/50"
             >
               <FiImage /> {file ? file.name : "Vybrat obrázek"}
             </button>
             <button
               type="submit"
-              className="mt-4 cursor-pointer rounded-xl bg-purple-400 p-2 font-light uppercase tracking-widest transition-all hover:bg-purple-700"
+              className="mt-4 cursor-pointer rounded-xl bg-primary-100 p-2 font-light uppercase tracking-widest transition-all hover:bg-primary-300"
             >
               Vytvorit Recept
             </button>

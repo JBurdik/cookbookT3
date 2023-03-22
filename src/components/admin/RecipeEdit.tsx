@@ -129,7 +129,7 @@ function RecipeEdit(props: {
       >
         <FaTimes size={20} />
       </div>
-      <div className="relative z-50 flex max-h-[90%] w-full gap-2 overflow-y-auto rounded-xl bg-gradient-to-bl from-[#2e026d] to-[#15162c] p-4 shadow-xl md:max-w-3xl">
+      <div className="relative z-50 flex max-h-[90%] w-full gap-2 overflow-y-auto rounded-xl bg-primary-800 p-4 shadow-xl md:max-w-3xl">
         <div className="flex h-full w-full flex-col">
           <h1 className="my-4 text-center text-lg font-thin uppercase tracking-widest text-white">
             Editace Receptu
@@ -240,14 +240,14 @@ function RecipeEdit(props: {
             <button
               type="button"
               onClick={openSelectFile}
-              className=" mx-auto mt-4 flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-purple-500 p-2 shadow-md shadow-black/50"
+              className=" mx-auto mt-4 flex w-fit flex-row items-center justify-center gap-2 rounded-md bg-primary-100 p-2 shadow-md shadow-black/50"
             >
               <FiImage /> {file ? file.name : "Vybrat obrázek"}
             </button>
 
             <button
               type="submit"
-              className="mt-4 cursor-pointer rounded-xl bg-purple-400 p-2 font-light uppercase tracking-widest transition-all hover:bg-purple-700"
+              className="mt-4 cursor-pointer rounded-xl bg-primaryS-500 p-2 font-light uppercase tracking-widest transition-all hover:bg-primary-700"
             >
               Uložit
             </button>
@@ -259,69 +259,3 @@ function RecipeEdit(props: {
 }
 
 export default RecipeEdit;
-
-// const TagSelect = ({
-//   tags,
-//   setTags,
-// }: {
-//   tags: Tags[];
-//   setTags: (tags: Tags[]) => void;
-// }) => {
-//   const tagQuery = api.tags.getAll.useQuery();
-
-//   const fileredTags = tagQuery.data?.filter((tag) => {
-//     return !tags.find((t) => t.name === tag.name);
-//   });
-
-//   const isActive = (name: string) => {
-//     return tags.find((tag) => tag.name === name);
-//   };
-
-//   const handleSelectTag = (name: string) => {
-//     if (isActive(name)) {
-//       const newTags = tags.filter((tag) => tag.name !== name);
-//       setTags(newTags);
-//     } else {
-//       setTags([...tags, { name: name }]);
-//     }
-//   };
-
-//   // const handleAddTag = (e: React.ChangeEvent<HTMLSelectElement>) => {
-//   //   if (e.target.value === "Vyber tag") return;
-//   //   setTags([...tags, { name: e.target.value }]);
-//   // };
-
-//   return (
-//     <div className="flex flex-col gap-2">
-//       Tags:
-//       {/* {fileredTags && fileredTags.length > 0 && (
-//         <select onChange={handleAddTag} className="text-black">
-//           <option selected>Vyber tag</option>
-//           {fileredTags.map((tag, i) => (
-//             <option
-//               key={i}
-//               value={tag.name}
-//               className="flex items-center justify-center gap-2"
-//             >
-//               {tag.name}
-//             </option>
-//           ))}
-//         </select>
-//       )} */}
-//       <div className="flex flex-wrap gap-2">
-//         {tagQuery.data?.map((tag) => (
-//           <div
-//             key={tag.name}
-//             className={`
-//             ${isActive(tag.name) ? "bg-purple-500" : ""}
-//             cursor-pointer rounded-md border-2 border-purple-500 p-2
-//             `}
-//             onClick={() => handleSelectTag(tag.name)}
-//           >
-//             {tag.name}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
