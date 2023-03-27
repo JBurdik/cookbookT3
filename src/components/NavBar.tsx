@@ -45,7 +45,7 @@ const NavBar = () => {
   };
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-50 flex h-16 w-full flex-row items-center justify-between rounded-lg border border-primaryL-200 bg-primary-300/20 px-4 py-2 backdrop-blur-md">
+      <div className="fixed bottom-0 left-1/2 z-50 flex h-16 w-full max-w-4xl -translate-x-1/2 flex-row items-center justify-between rounded-lg border border-primaryL-200 bg-primary-300/20 px-4 py-2 backdrop-blur-md">
         <Link href="/" className={css.btn}>
           <FiBook size={20} />
           <span>Recepty</span>
@@ -108,6 +108,7 @@ const NavBar = () => {
           </m.span>
         </button>
       </div>
+      {/* more menu */}
       <m.div
         initial="closed"
         animate={isOpen ? "open" : "closed"}
@@ -117,7 +118,7 @@ const NavBar = () => {
           type: "spring",
           bounce: 0.5,
         }}
-        className="fixed bottom-16 right-0 z-30 flex w-full flex-col items-center gap-6 border-t border-gray-50/20 bg-gray-700/20 pt-12 pb-3 shadow-lg shadow-black backdrop-blur-md"
+        className="fixed bottom-16 right-0 z-30 flex w-full max-w-4xl flex-col items-center gap-6 border-t border-gray-50/20 bg-gray-700/20 pt-12 pb-3 shadow-lg shadow-black backdrop-blur-md"
       >
         {/* buttons */}
         <m.div

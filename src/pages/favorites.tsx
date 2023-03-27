@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { PuffLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 import Layout from "../components/Layout";
 import RecipeCard from "../components/RecipeCard";
 import { api } from "../utils/api";
@@ -9,7 +9,8 @@ const FavoriteRecipesList = () => {
   if (isLoading) {
     return (
       <div>
-        <PuffLoader color="hsla(32, 40%, 65%, 1)" />
+        <BarLoader color="hsla(32, 40%, 65%, 1)" />
+        Načítám oblíbené recepty...
       </div>
     );
   }
