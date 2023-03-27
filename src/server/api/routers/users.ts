@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { TRPCError } from "@trpc/server";
 import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const usersRouter = createTRPCRouter({
@@ -36,5 +37,30 @@ export const usersRouter = createTRPCRouter({
         },
       });
       return { newRole };
+    }),
+  getFavRecipes: protectedProcedure
+    .input(z.string().optional())
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id;
+      const favRecipes = await ctx.prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+        select: {
+          favorites: {
+            select: {
+              recept: true,
+            },
+          },
+        },
+      });
+
+      if (!favRecipes || favRecipes.favorites.length === 0)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No favorite recipes found",
+        });
+
+      return favRecipes;
     }),
 });

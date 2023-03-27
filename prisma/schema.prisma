@@ -26,6 +26,16 @@ model Recepty {
   authorId    String
   author       User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tags        Tags[]
+  favBy  FavoriteRecipesOnUser[]
+}
+
+model FavoriteRecipesOnUser {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String  
+  recept       Recepty @relation(fields: [receptId], references: [id])
+  receptId     String
+
+  @@id([userId, receptId])
 }
 
 model Tags {
@@ -86,6 +96,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   recepty      Recepty[]
+  favorites    FavoriteRecipesOnUser[]
 }
 
 model VerificationToken {

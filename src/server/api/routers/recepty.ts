@@ -38,6 +38,7 @@ export const recipesRouter = createTRPCRouter({
       },
       include: {
         tags: true,
+        author: true,
       },
     });
     if (recept === null) {
@@ -144,4 +145,16 @@ export const recipesRouter = createTRPCRouter({
     });
     return { deletedRecipe };
   }),
+  favRecipe: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) throw new Error("Nemáte přihlášený účet");
+      const favRecipe = await ctx.prisma.favoriteRecipesOnUser.create({
+        data: {
+          receptId: input,
+          userId: ctx.session.user.id,
+        },
+      });
+      return { favRecipe };
+    }),
 });

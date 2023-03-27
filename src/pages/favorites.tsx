@@ -1,0 +1,52 @@
+import { useSession } from "next-auth/react";
+import { PuffLoader } from "react-spinners";
+import Layout from "../components/Layout";
+import RecipeCard from "../components/RecipeCard";
+import { api } from "../utils/api";
+
+const FavoriteRecipesList = () => {
+  const { data, isLoading } = api.users.getFavRecipes.useQuery();
+  if (isLoading) {
+    return (
+      <div>
+        <PuffLoader color="hsla(32, 40%, 65%, 1)" />
+      </div>
+    );
+  }
+  return (
+    <>
+      {data &&
+        data.favorites.map(({ recept }) => (
+          <RecipeCard key={recept.id} recipe={recept} />
+        ))}
+    </>
+  );
+};
+
+const Favorites = () => {
+  const { status } = useSession();
+  // const { data, isLoading } = api.users.getFavRecipes.useQuery();
+  if (status === "unauthenticated") return <Layout>Not logged in</Layout>;
+  if (status === "loading") return <Layout isLoading>Loading </Layout>;
+  return (
+    <Layout>
+      <h1>Oblíbené recepty</h1>
+      <FavoriteRecipesList />
+    </Layout>
+  );
+};
+
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   const session = await getServerAuthSession(context);
+//   const favRecipes = api.users.getFavRecipes.useQuery();
+
+//   if (!favRecipes.data) return { notFound: true };
+
+//   return {
+//     props: {
+//       favorites: favRecipes.data.favorites,
+//     },
+//   };
+// }
+
+export default Favorites;

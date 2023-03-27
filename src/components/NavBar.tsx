@@ -50,7 +50,7 @@ const NavBar = () => {
           <FiBook size={20} />
           <span>Recepty</span>
         </Link>
-        <Link href="/" className={css.btn}>
+        <Link href="/favorites" className={css.btn}>
           <FiHeart size={20} />
           <span>Oblibene</span>
         </Link>
