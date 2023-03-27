@@ -14,12 +14,12 @@ const FavoriteRecipesList = () => {
     );
   }
   return (
-    <>
+    <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {data &&
         data.favorites.map(({ recept }) => (
           <RecipeCard key={recept.id} recipe={recept} />
         ))}
-    </>
+    </div>
   );
 };
 

@@ -27,11 +27,9 @@ const RecipeCard = ({ recipe }: { recipe: Recepty }) => {
             alt={recipe.title}
           />
         </div>
-        <div className="absolute bottom-0 grid w-full grid-cols-2 items-center bg-gradient-to-t from-black to-transparent px-3 pt-24">
-          <h1 className="text-xl text-primaryL-900 md:text-4xl lg:text-5xl">
-            {recipe.title}
-          </h1>
-          <div className="row-span-2 my-4 grid grid-cols-3 place-items-start justify-items-center rounded-md">
+        <div className="absolute bottom-0 grid h-1/2 w-full grid-cols-2 border-t border-t-primary-100 bg-gradient-to-t from-black to-primary-500/50 px-3 pt-4 backdrop-blur-0 md:h-1/3">
+          <h1 className="text-xl text-primaryL-900">{recipe.title}</h1>
+          <div className="row-span-2 my-4 grid grid-cols-3 place-items-start justify-items-center self-end rounded-md">
             <span className="flex flex-col items-center justify-center gap-1 text-sm font-thin">
               <FaClock size={20} />
               {recipe.time} min.

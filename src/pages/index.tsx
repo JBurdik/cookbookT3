@@ -7,7 +7,7 @@ import { api } from "../utils/api";
 
 import { FaTimesCircle } from "react-icons/fa";
 import { FiAlertTriangle } from "react-icons/fi";
-import { BounceLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 import RecipeCard from "../components/RecipeCard";
 
 function Home() {
@@ -52,7 +52,7 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
       <Layout>
-        <main className="flex min-h-screen flex-col items-center justify-center">
+        <main className="flex min-h-screen w-full max-w-6xl flex-col items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-6 pt-2 pb-16 ">
             <div className="flex flex-col">
               <h1 className="font-thin tracking-tighter text-primaryL-900 sm:text-6xl">
@@ -92,13 +92,14 @@ function Home() {
             </div>
             {getRecipes.isLoading && (
               <div className="flex flex-col items-center justify-center gap-5">
-                <BounceLoader color="#faba8d" />
+                <BarLoader color="#faba8d" />
                 <p className="text-xs font-extralight uppercase tracking-widest">
                   Načítám recepty...
                 </p>
               </div>
             )}
-            <div className="flex h-full w-full max-w-5xl flex-col items-center justify-center gap-4">
+            {/* <div className="flex h-full w-full max-w-5xl flex-col items-center justify-center gap-4"> */}
+            <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {getRecipes.data ? (
                 getRecipes.data.map((recipe) => {
                   return <RecipeCard recipe={recipe} key={recipe.id} />;
