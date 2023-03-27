@@ -30,9 +30,9 @@ model Recepty {
 }
 
 model FavoriteRecipesOnUser {
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String  
-  recept       Recepty @relation(fields: [receptId], references: [id])
+  recept       Recepty @relation(fields: [receptId], references: [id], onDelete: Cascade)
   receptId     String
 
   @@id([userId, receptId])

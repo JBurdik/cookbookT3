@@ -7,9 +7,52 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaHeart, FaPen, FaTrash } from "react-icons/fa";
+import { FiHeart } from "react-icons/fi";
 import Layout from "../../components/Layout";
 import RecipeEdit from "../../components/admin/RecipeEdit";
 import { api } from "../../utils/api";
+
+const LikeButton = ({ receptId }: { receptId: string }) => {
+  const { data: isFaved } = api.users.isRecipeFav.useQuery(receptId);
+  const ctx = api.useContext();
+  const { mutate: fav } = api.recipes.favRecipe.useMutation({
+    onSuccess: () => {
+      void ctx.users.isRecipeFav.invalidate();
+    },
+  });
+  const { mutate: unFav } = api.recipes.unfavRecipe.useMutation({
+    onSuccess: () => {
+      void ctx.users.isRecipeFav.invalidate();
+    },
+  });
+  const handleFav = (type: string) => {
+    if (type === "fav") fav(receptId);
+    if (type === "unfav") unFav(receptId);
+  };
+  return (
+    <div>
+      {isFaved ? (
+        <button
+          onClick={() => handleFav("unfav")}
+          className="rounded-xl border-2 border-orange-600 bg-orange-400/50 p-3 text-orange-600 transition-all hover:bg-orange-700 hover:text-orange-200"
+        >
+          <FaHeart />
+        </button>
+      ) : (
+        <button
+          onClick={() => handleFav("fav")}
+          className="rounded-xl border-2 border-orange-600 bg-orange-400/50 p-3 text-orange-600 transition-all hover:bg-orange-700 hover:text-orange-200"
+        >
+          <FiHeart />
+        </button>
+      )}
+
+      {/* {session?.user &&
+                recept.authorId === session.user.id &&
+                recept && <EditBar recipe={recept} />} */}
+    </div>
+  );
+};
 
 const Recipe = () => {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -21,11 +64,6 @@ const Recipe = () => {
   const { id } = router.query;
   if (!id) return <Layout>Loading...</Layout>;
   const receptQuery = api.recipes.getOne.useQuery(id as string);
-  const favRecipe = api.recipes.favRecipe.useMutation({
-    onSuccess: (data) => {
-      console.log(data);
-    },
-  });
   const recept = receptQuery.data;
   if (!recept) return <Layout>Loading</Layout>;
   const generateContent = (json: JSONContent) => {
@@ -33,26 +71,22 @@ const Recipe = () => {
     return generateHTML(json, [StarterKit]);
   };
   const output = generateContent(JSON.parse(recept.content) as JSONContent);
-
-  const handleFav = () => {
-    favRecipe.mutate(recept.id);
-  };
   return (
     <Layout>
       <div className="flex w-full flex-col items-center justify-center gap-4">
         {recept && (
           <>
-            <div className="fixed inset-x-0 top-0 z-50 m-3 flex items-center justify-between">
-              <button
-                onClick={handleFav}
-                className="rounded-xl border-2 border-orange-600 bg-orange-400/50 p-3 text-orange-600 transition-all hover:bg-orange-700 hover:text-orange-200"
-              >
-                <FaHeart />
-              </button>
-              {session?.user &&
-                recept.authorId === session.user.id &&
-                recept && <EditBar recipe={recept} />}
-            </div>
+            {/* Edit bar */}
+            {session?.user && (
+              <div className="fixed inset-x-0 top-0 z-50 flex flex-row items-center justify-between bg-gradient-to-b from-black to-black/10 px-2 py-2 backdrop-blur-sm">
+                <LikeButton receptId={id as string} />
+                {recept.authorId === session.user.id && recept && (
+                  <EditBar recipe={recept} />
+                )}
+              </div>
+            )}
+
+            {/* Recipe card */}
             <div className="flex w-full max-w-4xl flex-col overflow-hidden rounded-lg p-2 nm-flat-gray-900-lg">
               <div className="relative h-96 w-full overflow-hidden rounded-3xl">
                 <Image
@@ -97,21 +131,18 @@ const EditBar = ({ recipe }: { recipe: Recepty }) => {
   return (
     <>
       {editId && <RecipeEdit recipeId={editId} setEditId={setEditId} />}
-
-      <div className="">
-        <div className="flex flex-row justify-end gap-2">
-          <button className="rounded-xl border-2 border-red-600 bg-red-400 p-3 text-red-600 transition-all hover:bg-red-700 hover:text-red-200">
-            <FaTrash />
-          </button>
-          <button
-            className="rounded-xl border-2 border-blue-600 bg-blue-400 p-3 text-blue-600 transition-all hover:bg-blue-700 hover:text-blue-200"
-            onClick={() => {
-              setEditId(recipe.id);
-            }}
-          >
-            <FaPen />
-          </button>
-        </div>
+      <div className="flex flex-row justify-end gap-2">
+        <button className="rounded-xl border-2 border-red-600 bg-red-400 p-3 text-red-600 transition-all hover:bg-red-700 hover:text-red-200">
+          <FaTrash />
+        </button>
+        <button
+          className="rounded-xl border-2 border-blue-600 bg-blue-400 p-3 text-blue-600 transition-all hover:bg-blue-700 hover:text-blue-200"
+          onClick={() => {
+            setEditId(recipe.id);
+          }}
+        >
+          <FaPen />
+        </button>
       </div>
     </>
   );

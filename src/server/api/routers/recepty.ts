@@ -157,4 +157,17 @@ export const recipesRouter = createTRPCRouter({
       });
       return { favRecipe };
     }),
+  unfavRecipe: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const unFavRecipe = await ctx.prisma.favoriteRecipesOnUser.delete({
+        where: {
+          userId_receptId: {
+            userId: ctx.session.user.id,
+            receptId: input,
+          },
+        },
+      });
+      return { unFavRecipe };
+    }),
 });

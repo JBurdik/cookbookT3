@@ -63,4 +63,25 @@ export const usersRouter = createTRPCRouter({
 
       return favRecipes;
     }),
+  isRecipeFav: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const isFav = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          favorites: {
+            where: {
+              receptId: input,
+            },
+          },
+        },
+      });
+      if (!isFav)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      return isFav.favorites.length === 1 ? true : false;
+    }),
 });
