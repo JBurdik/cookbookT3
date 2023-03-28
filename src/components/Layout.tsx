@@ -1,4 +1,4 @@
-import { BounceLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 import NavBar from "./NavBar";
 
 const Layout = ({
@@ -30,7 +30,7 @@ const Layout = ({
           {/* if is loading show this spiner */}
           {isLoading ? (
             <div className="flex flex-col items-center justify-center gap-5">
-              <BounceLoader color="#faba8d" />
+              <BarLoader color="#faba8d" />
               <p className="text-xs font-extralight uppercase tracking-widest">
                 {children}
               </p>

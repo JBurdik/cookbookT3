@@ -22,6 +22,14 @@ export const recipesRouter = createTRPCRouter({
       });
       return recepty;
     }),
+  getPersonal: protectedProcedure.query(async ({ ctx }) => {
+    const personal = await ctx.prisma.recepty.findMany({
+      where: {
+        authorId: ctx.session.user.id,
+      },
+    });
+    return personal;
+  }),
   getAllTitles: publicProcedure.query(async ({ ctx }) => {
     const recepty = await ctx.prisma.recepty.findMany({
       select: {

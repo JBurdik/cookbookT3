@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FaBars, FaSignInAlt, FaSignOutAlt, FaTimes } from "react-icons/fa";
-import { FiBook, FiCommand, FiHeart, FiInfo, FiSettings } from "react-icons/fi";
+import { FiBook, FiCommand, FiHeart, FiInfo, FiList } from "react-icons/fi";
 import css from "./NavBar.module.css";
 
 const NavBar = () => {
@@ -54,9 +54,9 @@ const NavBar = () => {
           <FiHeart size={20} />
           <span>Oblibene</span>
         </Link>
-        <Link href="/" className={css.btn}>
-          <FiSettings size={20} />
-          <span>Nastaveni</span>
+        <Link href="/moje-recepty" className={css.btn}>
+          <FiList size={20} />
+          <span>Moje Recepty</span>
         </Link>
         <button className={css.btn} onClick={() => setIsOpen(!isOpen)}>
           {/* icon of more btn */}
@@ -121,13 +121,15 @@ const NavBar = () => {
         className="fixed bottom-16 right-0 z-30 flex w-full max-w-4xl flex-col items-center gap-6 border-t border-gray-50/20 bg-gray-700/20 pt-12 pb-3 shadow-lg shadow-black backdrop-blur-md"
       >
         {/* buttons */}
-        <m.div
-          whileHover={{ scale: 1.2, color: "#faba8d" }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          className="flex items-center justify-center gap-2 rounded-full bg-white/30 px-4 py-2 "
-        >
-          <FiInfo size={20} />O projektu
-        </m.div>
+        <Link href="/about">
+          <m.div
+            whileHover={{ scale: 1.2, color: "#faba8d" }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            className="flex items-center justify-center gap-2 rounded-full bg-white/30 px-4 py-2 "
+          >
+            <FiInfo size={20} />O projektu
+          </m.div>
+        </Link>
 
         {sessionData ? (
           <>
