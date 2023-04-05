@@ -10,14 +10,6 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { BarLoader } from "react-spinners";
 import RecipeList from "../components/RecipeList";
 
-export function getServerSide = async () => {
-  return {
-    props: {
-      session: null,
-    },
-  };
-};
-
 function Home() {
   const [tag, setTag] = useState<Tags>();
   const getRecipes = api.recipes.getAll.useQuery(tag ? tag.name : undefined);
