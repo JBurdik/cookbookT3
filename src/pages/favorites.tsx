@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { BarLoader } from "react-spinners";
 import Layout from "../components/Layout";
 import RecipeCard from "../components/RecipeCard";
@@ -30,10 +31,15 @@ const Favorites = () => {
   if (status === "unauthenticated") return <Layout>Not logged in</Layout>;
   if (status === "loading") return <Layout isLoading>Loading </Layout>;
   return (
-    <Layout>
-      <h1>Oblíbené recepty</h1>
-      <FavoriteRecipesList />
-    </Layout>
+    <>
+      <Head>
+        <title>Oblíbené recepty | Naservírováno.cz </title>
+      </Head>
+      <Layout>
+        <h1>Oblíbené recepty</h1>
+        <FavoriteRecipesList />
+      </Layout>
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaClock, FaStar, FaUsers } from "react-icons/fa";
 
-const RecipeCard = ({ recipe }: { recipe: Recepty }) => {
+const RecipeCardVertical = ({ recipe }: { recipe: Recepty }) => {
   const Dificulty = (dificulty: string) => {
     switch (dificulty) {
       case "EASY":
@@ -52,4 +52,4 @@ const RecipeCard = ({ recipe }: { recipe: Recepty }) => {
   );
 };
 
-export default RecipeCard;
+export default RecipeCardVertical;

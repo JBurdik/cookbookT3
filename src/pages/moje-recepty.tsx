@@ -1,11 +1,12 @@
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import Layout from "../components/Layout";
 import RecipeCard from "../components/RecipeCard";
 import { api } from "../utils/api";
 
 const RecipesList = () => {
   const { data, isLoading } = api.recipes.getPersonal.useQuery();
-  if (isLoading) return <Layout isLoading>Loading...</Layout>;
+  if (isLoading) return <Layout isLoading>Loading My Recipes...</Layout>;
   return (
     <>
       {data &&
@@ -19,10 +20,15 @@ const MyRecipes = () => {
   if (status === "unauthenticated") return <Layout>Not logged in</Layout>;
   if (status === "loading") return <Layout isLoading>Loading..</Layout>;
   return (
-    <Layout>
-      <h1>Moje recepty</h1>
-      <RecipesList />
-    </Layout>
+    <>
+      <Head>
+        <title>Moje recepty | Naservírováno.cz </title>
+      </Head>
+      <Layout>
+        <h1>Moje recepty</h1>
+        <RecipesList />
+      </Layout>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import type { Recepty } from "@prisma/client";
-import RecipeCard from "./RecipeCard";
+import RecipeCardVertical from "./RecipeCardVertical";
 
 interface RecipeListProps {
   recipes: Recepty[];
@@ -7,9 +7,9 @@ interface RecipeListProps {
 
 const RecipeList = ({ recipes }: RecipeListProps) => {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
       {recipes.map((recipe) => (
-        <RecipeCard recipe={recipe} key={recipe.id} />
+        <RecipeCardVertical recipe={recipe} key={recipe.id} />
       ))}
     </div>
   );

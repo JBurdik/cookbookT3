@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import Image from "next/image";
 import { useRef } from "react";
 import Layout from "../components/Layout";
@@ -26,44 +27,49 @@ function Profile() {
       changeName.mutate(name.current.value);
   };
   return (
-    <Layout>
-      <h1>Profile</h1>
-      {session && session.user && (
-        <section className="flex flex-col items-center gap-2">
-          <Image
-            src={session.user.image || ""}
-            alt={session.user.name || "User image"}
-            width={100}
-            height={100}
-            className="rounded-full border-4 border-primary-100"
-          />
-          <h2>{session.user.name}</h2>
-          <div className="flex items-end gap-2">
-            <p className="text-xs font-extralight">Role:</p>
-            <p className="text-sm font-bold tracking-wide text-primaryS-500">
-              {session.user.role}
-            </p>
-          </div>
-          <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-            <h4 className="m-0 text-center">Upravit údaje</h4>
-            <div className="flex flex-col">
-              <label className="mb-1 text-xs font-light">Nové jméno:</label>
-              <input
-                type="text"
-                ref={name}
-                className="rounded-md border border-purple-200 bg-gray-700/40 p-2 outline-none"
-              />
+    <>
+      <Head>
+        <title>Profil | Naservírováno.cz </title>
+      </Head>
+      <Layout>
+        <h1>Profile</h1>
+        {session && session.user && (
+          <section className="flex flex-col items-center gap-2">
+            <Image
+              src={session.user.image || ""}
+              alt={session.user.name || "User image"}
+              width={100}
+              height={100}
+              className="rounded-full border-4 border-primary-100"
+            />
+            <h2>{session.user.name}</h2>
+            <div className="flex items-end gap-2">
+              <p className="text-xs font-extralight">Role:</p>
+              <p className="text-sm font-bold tracking-wide text-primaryS-500">
+                {session.user.role}
+              </p>
             </div>
-            <button
-              className="flex items-center justify-center rounded-md border border-purple-200 bg-gray-700/40 p-2"
-              type="submit"
-            >
-              Nastavit
-            </button>
-          </form>
-        </section>
-      )}
-    </Layout>
+            <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+              <h4 className="m-0 text-center">Upravit údaje</h4>
+              <div className="flex flex-col">
+                <label className="mb-1 text-xs font-light">Nové jméno:</label>
+                <input
+                  type="text"
+                  ref={name}
+                  className="rounded-md border border-purple-200 bg-gray-700/40 p-2 outline-none"
+                />
+              </div>
+              <button
+                className="flex items-center justify-center rounded-md border border-purple-200 bg-gray-700/40 p-2"
+                type="submit"
+              >
+                Nastavit
+              </button>
+            </form>
+          </section>
+        )}
+      </Layout>
+    </>
   );
 }
 

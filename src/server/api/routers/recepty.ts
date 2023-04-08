@@ -22,6 +22,15 @@ export const recipesRouter = createTRPCRouter({
       });
       return recepty;
     }),
+  get3Newest: publicProcedure.query(async ({ ctx }) => {
+    const recepty = await ctx.prisma.recepty.findMany({
+      take: 3,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return recepty;
+  }),
   getPersonal: protectedProcedure.query(async ({ ctx }) => {
     const personal = await ctx.prisma.recepty.findMany({
       where: {
@@ -38,6 +47,11 @@ export const recipesRouter = createTRPCRouter({
       },
     });
     return recepty;
+  }),
+  getRandom: publicProcedure.query(async ({ ctx }) => {
+    const recepty = await ctx.prisma.recepty.findMany();
+    const random = Math.floor(Math.random() * recepty.length);
+    return recepty[random];
   }),
   getOne: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     const recept = await ctx.prisma.recepty.findUnique({

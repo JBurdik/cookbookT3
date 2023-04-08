@@ -1,43 +1,24 @@
-import { useState } from "react";
-
-import type { Tags } from "@prisma/client";
-import { type Recepty } from "@prisma/client";
 import Layout from "../components/Layout";
 import { api } from "../utils/api";
 
-import { FaTimesCircle } from "react-icons/fa";
+import Link from "next/link";
 import { FiAlertTriangle } from "react-icons/fi";
-import { BarLoader } from "react-spinners";
+import RecipeCardVertical from "../components/RecipeCardVertical";
 import RecipeList from "../components/RecipeList";
 
-function Home() {
-  const [tag, setTag] = useState<Tags>();
-  const getRecipes = api.recipes.getAll.useQuery(tag ? tag.name : undefined);
-  const tagsQuery = api.tags.getAll.useQuery();
-  const options = api.options.getAll.useQuery().data;
-  const [recipes, setRecipes] = useState<Recepty[]>();
+const RandomRecipe = () => {
+  const { data, isLoading } = api.recipes.getRandom.useQuery();
+  if (isLoading)
+    return <Layout isLoading>Načítání receptu právě pro tebe</Layout>;
+  if (!data) return <Layout>Recept nenalezen</Layout>;
+  return <RecipeCardVertical recipe={data} />;
+};
 
-  // const Dificulty = (dificulty: string) => {
-  //   switch (dificulty) {
-  //     case "EASY":
-  //       return "Snadná";
-  //     case "MEDIUM":
-  //       return "Střední";
-  //     case "HARD":
-  //       return "Těžká";
-  //     case "EXTRAHARD":
-  //       return "Extrémně těžká";
-  //   }
-  // };
-  if (options?.underConstruction)
-    return (
-      <Layout>
-        <FiAlertTriangle size={200} className="text-yellow-300" />
-        <h1 className="text-4xl">
-          Pracuji na vylepšení webu brzy bude znovu k dispozici
-        </h1>
-      </Layout>
-    );
+function Home() {
+  const { data: recipes, isLoading: recipesLoading } =
+    api.recipes.get3Newest.useQuery();
+
+  if (recipesLoading) return <Layout isLoading>Loading...</Layout>;
   return (
     <>
       <Layout>
@@ -45,67 +26,41 @@ function Home() {
           <div className="container flex flex-col items-center justify-center gap-12 px-6 pt-2 pb-16 ">
             <div className="flex flex-col">
               <h1 className="font-thin tracking-tighter text-primaryL-900 sm:text-6xl">
-                {options?.name}
+                Naservírováno
               </h1>
               <p className="relative -top-2 self-end text-primaryL-500/40">
                 by Jirka Burdych
               </p>
             </div>
-            {/* <h2 className="text-3xl">Recepty: </h2> */}
-            <div className="flex flex-col">
-              <span className="mb-3 flex flex-row items-center justify-between gap-2">
-                <h3>Filtr:</h3>
-                {tag && (
-                  <div
-                    className={`border-secondary/40 flex cursor-pointer items-center gap-2 rounded-xl border p-2 text-xs font-thin text-purple-100/70 transition-all duration-200 ease-in-out`}
-                    onClick={() => setTag(undefined)}
+            <section className="w-full">
+              <h2 className="mb-3 w-fit border-b border-b-primaryS-600 pr-4 pb-2">
+                Recept pro tebe:
+              </h2>
+              <RandomRecipe />
+            </section>
+            <section className="flex w-full flex-col gap-3">
+              <h2 className="mb-3 w-fit border-b border-b-primaryS-600 pr-4 pb-2">
+                Nejnovější recepty:
+              </h2>
+              {recipes && recipes.length > 0 ? (
+                <>
+                  <RecipeList recipes={recipes} />
+                  <Link
+                    className="text-center text-primaryS-500 transition-colors hover:text-primary-100"
+                    href="/recepty"
                   >
-                    Vymazat filtr
-                    <FaTimesCircle />
-                  </div>
-                )}
-              </span>
-              <div className="flex flex-row flex-wrap gap-2">
-                {tagsQuery.data?.map((t) => (
-                  <div
-                    className={`${
-                      tag === t ? "bg-primary-300" : "bg-transparent"
-                    } cursor-pointer rounded-full border border-primary-300 px-3 transition-all duration-200 ease-in-out`}
-                    onClick={() => setTag(t)}
-                    key={t.name}
-                  >
-                    {t.name}
-                  </div>
-                ))}
-              </div>
-            </div>
-            {getRecipes.isLoading ? (
-              <div className="flex flex-col items-center justify-center gap-5">
-                <BarLoader color="#faba8d" />
-                <p className="text-xs font-extralight uppercase tracking-widest">
-                  Načítám recepty...
-                </p>
-              </div>
-            ) : getRecipes.isSuccess &&
-              getRecipes.data &&
-              getRecipes.data.length > 0 ? (
-              <RecipeList recipes={getRecipes.data} />
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-5">
-                <FiAlertTriangle size={100} className="text-yellow-300" />
-                <p className="text-xs font-extralight uppercase tracking-widest">
-                  Žádné recepty
-                </p>
-              </div>
-            )}
-            {/* <div className="flex h-full w-full max-w-5xl flex-col items-center justify-center gap-4"> */}
-            <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {/* {getRecipes.data ? (
-                <RecipeList recipes={getRecipes.data} />
+                    Více receptů
+                  </Link>
+                </>
               ) : (
-                <>Žádné recepty v databázi</>
-              )} */}
-            </div>
+                <div className="flex flex-col items-center justify-center gap-5">
+                  <FiAlertTriangle size={100} className="text-yellow-300" />
+                  <p className="text-xs font-extralight uppercase tracking-widest">
+                    Žádné recepty
+                  </p>
+                </div>
+              )}
+            </section>
           </div>
         </main>
       </Layout>
