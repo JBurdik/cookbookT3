@@ -16,6 +16,18 @@ const RecipeCardVertical = ({ recipe }: { recipe: Recepty }) => {
         return "Extrémně těžká";
     }
   };
+  const color = (dificulty: string) => {
+    switch (dificulty) {
+      case "EASY":
+        return "text-green-500";
+      case "MEDIUM":
+        return "text-yellow-500";
+      case "HARD":
+        return "text-red-600";
+      case "EXTRAHARD":
+        return "text-purple-600";
+    }
+  };
   return (
     <Link href={`/recipe/${recipe.id}`} className="w-full" key={recipe.id}>
       <div className="group relative grid h-64 grid-cols-1 justify-start gap-4 overflow-hidden rounded-lg p-4 text-white shadow-lg shadow-black transition-all md:h-80 md:grid-cols-2">
@@ -35,7 +47,7 @@ const RecipeCardVertical = ({ recipe }: { recipe: Recepty }) => {
               {recipe.time} min.
             </span>
             <span className="flex flex-col items-center justify-items-start gap-1 text-center text-sm font-thin">
-              <FaStar size={20} />
+              <FaStar size={20} className={color(recipe.difficulty)} />
               {Dificulty(recipe.difficulty)}
             </span>
             <span className="flex flex-col items-center justify-center gap-1 text-sm font-thin">

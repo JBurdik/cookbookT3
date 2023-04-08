@@ -24,7 +24,7 @@ export const recipesRouter = createTRPCRouter({
     }),
   get3Newest: publicProcedure.query(async ({ ctx }) => {
     const recepty = await ctx.prisma.recepty.findMany({
-      take: 3,
+      take: 4,
       orderBy: {
         createdAt: "desc",
       },
