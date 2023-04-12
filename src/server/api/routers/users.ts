@@ -61,7 +61,7 @@ export const usersRouter = createTRPCRouter({
           message: "No favorite recipes found",
         });
 
-      return favRecipes;
+      return favRecipes.favorites;
     }),
   isRecipeFav: protectedProcedure
     .input(z.string())

@@ -167,6 +167,18 @@ export const recipesRouter = createTRPCRouter({
     });
     return { deletedRecipe };
   }),
+  getFavs: protectedProcedure.query(async ({ ctx }) => {
+    const favs = await ctx.prisma.recepty.findMany({
+      where: {
+        favBy: {
+          some: {
+            userId: ctx.session.user.id,
+          },
+        },
+      },
+    });
+    return favs;
+  }),
   favRecipe: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

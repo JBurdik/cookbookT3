@@ -1,18 +1,13 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
-import RecipeCard from "../components/RecipeCard";
+import RecipeList from "../components/RecipeList";
 import { api } from "../utils/api";
 
 const RecipesList = () => {
   const { data, isLoading } = api.recipes.getPersonal.useQuery();
   if (isLoading) return <Layout isLoading>Loading My Recipes...</Layout>;
-  return (
-    <>
-      {data &&
-        data.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)}
-    </>
-  );
+  return <>{data && <RecipeList recipes={data} />}</>;
 };
 
 const MyRecipes = () => {

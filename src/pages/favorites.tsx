@@ -2,11 +2,11 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { BarLoader } from "react-spinners";
 import Layout from "../components/Layout";
-import RecipeCard from "../components/RecipeCard";
+import RecipeList from "../components/RecipeList";
 import { api } from "../utils/api";
 
 const FavoriteRecipesList = () => {
-  const { data, isLoading } = api.users.getFavRecipes.useQuery();
+  const { data: favs, isLoading } = api.recipes.getFavs.useQuery();
   if (isLoading) {
     return (
       <div>
@@ -17,10 +17,7 @@ const FavoriteRecipesList = () => {
   }
   return (
     <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {data &&
-        data.favorites.map(({ recept }) => (
-          <RecipeCard key={recept.id} recipe={recept} />
-        ))}
+      {favs && <RecipeList recipes={favs} />}
     </div>
   );
 };

@@ -118,7 +118,7 @@ const NavBar = () => {
           type: "spring",
           bounce: 0.5,
         }}
-        className="fixed bottom-16 right-0 z-30 flex w-full max-w-4xl flex-col items-center gap-6 border-t border-gray-50/20 bg-gray-700/20 pt-12 pb-3 shadow-lg shadow-black backdrop-blur-md"
+        className="fixed bottom-16 left-0 z-30 flex w-full max-w-4xl translate-x-1/2 flex-col items-center gap-6 border-t border-gray-50/20 bg-gray-700/20 pt-12 pb-3 shadow-lg shadow-black backdrop-blur-md"
       >
         {/* buttons */}
         <Link href="/about">
@@ -133,6 +133,15 @@ const NavBar = () => {
 
         {sessionData ? (
           <>
+            <Link href="/about">
+              <m.div
+                whileHover={{ scale: 1.2, color: "#faba8d" }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                className="flex items-center justify-center gap-2 rounded-full bg-white/30 px-4 py-2 "
+              >
+                <FiInfo size={20} />O projektu
+              </m.div>
+            </Link>
             <AuthShowcase />
           </>
         ) : (
