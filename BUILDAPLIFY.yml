@@ -20,7 +20,7 @@ frontend:
         - echo "S3_UPLOAD_SECRET=$S3_UPLOAD_SECRET" >> .env
         - echo "S3_UPLOAD_REGION=$S3_UPLOAD_REGION" >> .env
         - echo "S3_UPLOAD_BUCKET=$S3_UPLOAD_BUCKET" >> .env
-
+        - echo "DATABASE_URL=$DATABASE_URL" >> .env
   artifacts:
     baseDirectory: .next
     files:
